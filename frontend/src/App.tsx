@@ -1,5 +1,13 @@
+import Header from "./elements/header";
+import Body from "./elements/body";
+
 function App() {
-  return <></>;
+  return (
+    <>
+      <Header />
+      <Body />
+    </>
+  );
 }
 
 export default App;
