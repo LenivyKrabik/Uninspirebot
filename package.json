@@ -1,0 +1,27 @@
+{
+  "name": "uninspirobot",
+  "version": "1.0.0",
+  "description": "Copy of inspirobot.me but worse",
+  "keywords": [
+    "inspire",
+    "bot",
+    "notAI",
+    "uninspire",
+    "semen"
+  ],
+  "homepage": "https://github.com/LenivyKrabik/Uninspirebot#readme",
+  "bugs": {
+    "url": "https://github.com/LenivyKrabik/Uninspirebot/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LenivyKrabik/Uninspirebot.git"
+  },
+  "license": "MIT",
+  "author": "Lenivy_krabik",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Test yourself\""
+  }
+}
