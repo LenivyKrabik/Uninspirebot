@@ -8,3 +8,4 @@ Clone of inspirobot.me but worse
 - Backend
 - Body
 - Routing
+- Start to work on phrases
