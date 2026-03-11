@@ -20,7 +20,7 @@
   "license": "MIT",
   "author": "Lenivy_krabik",
   "type": "module",
-  "main": "index.js",
+  "main": "main.tsx",
   "scripts": {
     "test": "echo \"Test yourself\"",
     "dev": "vite",
