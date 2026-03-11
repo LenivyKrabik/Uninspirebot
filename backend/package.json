@@ -24,6 +24,7 @@
   "scripts": {
     "test": "echo \"Test yourself\"",
     "build": "tsc",
+    "start": "ts-node ./src/main.ts",
     "dev": "nodemon --exec ts-node ./src/main.ts"
   },
   "dependencies": {
