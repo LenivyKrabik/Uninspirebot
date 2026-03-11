@@ -23,7 +23,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Test yourself\"",
-    "frontend": "npm start --prefix ./frontend",
-    "backend": "npm start --prefix ./backend"
+    "frontdev": "npm run dev --prefix ./frontend",
+    "backend": "echo 'No backend start script yet'"
   }
 }
