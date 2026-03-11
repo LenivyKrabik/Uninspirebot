@@ -20,11 +20,18 @@
   "license": "MIT",
   "author": "Lenivy_krabik",
   "type": "module",
-  "main": "index.js",
+  "main": "src/main.ts",
   "scripts": {
-    "test": "echo \"Test yourself\""
+    "test": "echo \"Test yourself\"",
+    "build": "tsc",
+    "dev": "nodemon --exec ts-node ./src/main.ts"
   },
   "dependencies": {
     "fastify": "^5.8.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
   }
 }
