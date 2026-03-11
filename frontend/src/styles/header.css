@@ -4,3 +4,16 @@
 
   background-color: blueviolet; /*Dev color*/
 }
+
+.homeButton {
+  width: 220px;
+  height: 100%;
+
+  background-color: aqua;
+  font-size: 22pt;
+  font-family: "Courier New", Courier, monospace;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
