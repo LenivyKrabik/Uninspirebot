@@ -23,5 +23,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Test yourself\""
+  },
+  "dependencies": {
+    "fastify": "^5.8.2"
   }
 }
