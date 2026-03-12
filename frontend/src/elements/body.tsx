@@ -11,7 +11,7 @@ function Body() {
     <div className="body">
       <button
         onClick={() => {
-          setWisdom(backend.getTestTextWisdom());
+          setWisdom(backend.getTextWisdom());
         }}
       >
         Generate test wisdom
