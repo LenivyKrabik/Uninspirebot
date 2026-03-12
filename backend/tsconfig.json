@@ -41,6 +41,7 @@
     "moduleDetection": "force",
     "skipLibCheck": true,
 
-    "allowImportingTsExtensions": true
+    "allowImportingTsExtensions": true,
+    "strictPropertyInitialization": false
   }
 }
