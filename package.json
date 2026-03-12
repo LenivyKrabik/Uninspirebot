@@ -23,6 +23,6 @@
   "scripts": {
     "test": "echo \"Test yourself\"",
     "frontdev": "npm run dev --prefix ./frontend",
-    "backend": "echo 'No backend start script yet'"
+    "backdev": "npm run dev --prefix ./backend"
   }
 }
