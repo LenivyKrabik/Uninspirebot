@@ -1,0 +1,41 @@
+{
+  "wrapers": [
+    {
+      "text": "One wise man once said: #",
+      "variables": [[{ "type": "phrase" }]]
+    }
+  ],
+  "phrases": [
+    {
+      "text": "in a world where everyone is #, you are #",
+      "variables": [
+        [{ "type": "adjective" }, { "type": "gerund" }],
+        [{ "type": "adjective" }, { "type": "gerund" }]
+      ]
+    },
+    {
+      "text": "everyone who hates you actually #",
+      "variables": [[{ "type": "verb" }]]
+    }
+  ],
+  "nouns": [
+    { "text": "semen" },
+    { "text": "happiness" },
+    { "text": "sadness" }
+  ],
+  "verbs": [
+    { "text": "find happiness", "gerund": "finding hapiness", "variables": [] },
+    {
+      "text": "feel bad about #",
+      "gerund": "feelling bad about #",
+      "variables": [[{ "type": "noun" }]]
+    }
+  ],
+  "adjectives": [
+    { "text": "horny" },
+    { "text": "sleepy" },
+    { "text": "disapointed" }
+  ],
+  "mantras": [{ "text": "Repeat to yourself: \"#,#,#\"" }],
+  "afirmations": [{ "text": "Breath in. Breath Out." }]
+}
