@@ -11,10 +11,10 @@ function Body() {
     <div className="body">
       <button
         onClick={() => {
-          setWisdom(backend.getTextWisdom());
+          setWisdom(backend.getTestTextWisdom());
         }}
       >
-        Generate wisdom
+        Generate test wisdom
       </button>
       <h1>{wisdom}</h1>
     </div>

@@ -3,13 +3,13 @@ import type {
   FastifyPluginOptions,
   FastifyPluginAsync,
 } from "fastify";
-import { getTextWisdom } from "./routesHandlers.ts";
+import { getTestTextWisdom } from "./routesHandlers.ts";
 
 const routes: FastifyPluginAsync = async (
   fastify: FastifyInstance,
   options: FastifyPluginOptions,
 ) => {
-  fastify.get("/textWisdom", getTextWisdom);
+  fastify.get("/testTextWisdom", getTestTextWisdom);
 };
 
 export default routes;
