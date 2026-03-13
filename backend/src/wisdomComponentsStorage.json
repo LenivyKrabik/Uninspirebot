@@ -106,7 +106,7 @@
     {
       "text": "expect you to #",
       "gerund": "expecting you to #",
-      "variables": [[{ "type": "gerund" }]]
+      "variables": [[{ "type": "verb" }]]
     },
     {
       "text": "be #",
