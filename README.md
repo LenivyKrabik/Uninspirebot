@@ -18,6 +18,7 @@ Clone of inspirobot.me but worse
 - Add cors for right addresses access to backend only
 - Add test
 - Make it look pretier💅
+- NotFound page
 
 # Ideas to implement labs:
 
