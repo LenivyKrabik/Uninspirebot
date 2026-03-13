@@ -1,14 +1,14 @@
 import { useContext, useState } from "react";
-import "../styles/body.css";
+import "../styles/homePage.css";
 import ServicesContext from "../services/servicesContext";
 
-function Body() {
+function HomePage() {
   const { backend } = useContext(ServicesContext);
 
   let [wisdom, setWisdom] = useState("");
 
   return (
-    <div className="body">
+    <div className="homePage">
       <button
         onClick={() => {
           setWisdom(backend.getTextWisdom());
@@ -21,4 +21,4 @@ function Body() {
   );
 }
 
-export default Body;
+export default HomePage;
