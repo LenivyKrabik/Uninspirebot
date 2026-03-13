@@ -4,7 +4,6 @@ Clone of inspirobot.me but worse
 
 ## ToDo list:
 
-- Backend
 - Body
 - Routing
 - Add home button functionality
@@ -15,3 +14,48 @@ Clone of inspirobot.me but worse
 - Make so no connection to backend doesn't crash frontend
 - Make more phrases
 - Review wisdomBuilder.ts
+- Fix dots at the end of the sentances
+- Add cors for right addresses access to backend only
+- Add test
+- Make it look pretier💅
+
+# Ideas to implement labs:
+
+## Lab 1:
+
+-
+
+## Lab 2: ✓
+
+Already done
+
+## Lab 3:
+
+- For photo backgrounds
+- With elevenlabs api calls
+
+## Lab 4:
+
+-
+
+## Lab 5:
+
+-
+
+## Lab 6:
+
+- Use for claude integration for lab 8
+
+## Lab 7:
+
+-
+
+## Lab 8:
+
+- Make Claude integration to generate new components base on some data user provides
+- Make Google login
+- Make ElevenLabs voices
+
+## Lab 9:
+
+-
