@@ -1,7 +1,19 @@
 {
   "wrapers": [
     {
-      "text": "One wise man once said: #",
+      "text": "one wise man once said: #",
+      "variables": [[{ "type": "phrase" }]]
+    },
+    {
+      "text": "no matter what anyone tells you, #",
+      "variables": [[{ "type": "phrase" }]]
+    },
+    {
+      "text": "think about this: #",
+      "variables": [[{ "type": "phrase" }]]
+    },
+    {
+      "text": "remember: #",
       "variables": [[{ "type": "phrase" }]]
     }
   ],
@@ -16,12 +28,67 @@
     {
       "text": "everyone who hates you actually #",
       "variables": [[{ "type": "verb" }]]
+    },
+    {
+      "text": "you are #",
+      "variables": [
+        [{ "type": "noun" }, { "type": "gerund" }, { "type": "adjective" }]
+      ]
+    },
+    {
+      "text": "you are going to #",
+      "variables": [[{ "type": "verb" }]]
+    },
+    {
+      "text": "you are going to be fine",
+      "variables": [[]]
+    },
+    {
+      "text": "don't be #, be #",
+      "variables": [[{ "type": "adjective" }], [{ "type": "adjective" }]]
+    },
+    {
+      "text": "every once in a while you should try #",
+      "variables": [[{ "type": "noun" }, { "type": "gerund" }]]
+    },
+    {
+      "text": "it's either # or #",
+      "variables": [
+        [{ "type": "noun" }, { "type": "gerund" }],
+        [{ "type": "noun" }, { "type": "gerund" }]
+      ]
+    },
+    {
+      "text": "don't be afraid to admit that you are #",
+      "variables": [[{ "type": "adjective" }, { "type": "gerund" }]]
+    },
+    {
+      "text": "never give up, or else you will never #",
+      "variables": [[{ "type": "verb" }]]
+    },
+    {
+      "text": "when thinking about #, always remember about #",
+      "variables": [
+        [{ "type": "noun" }, { "type": "verb" }],
+        [{ "type": "noun" }]
+      ]
+    },
+    {
+      "text": "those who choose to #, more likely to be #",
+      "variables": [[{ "type": "verb" }], [{ "type": "adjective" }]]
+    },
+    {
+      "text": "seem #. Seem #",
+      "variables": [[{ "type": "adjective" }], [{ "type": "adjective" }]]
     }
   ],
   "nouns": [
     { "text": "semen" },
     { "text": "happiness" },
-    { "text": "sadness" }
+    { "text": "sadness" },
+    { "text": "madness" },
+    { "text": "reality" },
+    { "text": "expectations" }
   ],
   "verbs": [
     { "text": "find happiness", "gerund": "finding hapiness", "variables": [] },
@@ -29,13 +96,39 @@
       "text": "feel bad about #",
       "gerund": "feelling bad about #",
       "variables": [[{ "type": "noun" }]]
+    },
+    { "text": "lie", "gerund": "lying", "variables": [] },
+    {
+      "text": "lie about #",
+      "gerund": "lying about #",
+      "variables": [[{ "type": "noun" }, { "type": "gerund" }]]
+    },
+    {
+      "text": "expect you to #",
+      "gerund": "expecting you to #",
+      "variables": [[{ "type": "gerund" }]]
+    },
+    {
+      "text": "be #",
+      "gerund": "being #",
+      "variables": [[{ "type": "adjective" }]]
     }
   ],
   "adjectives": [
     { "text": "horny" },
     { "text": "sleepy" },
-    { "text": "disapointed" }
+    { "text": "disapointed" },
+    { "text": "guilty" },
+    { "text": "great" },
+    { "text": "gretest" },
+    { "text": "worthwhile" }
   ],
-  "mantras": [{ "text": "Repeat to yourself: \"#,#,#\"" }],
-  "afirmations": [{ "text": "Breath in. Breath Out." }]
+  "mantras": [
+    { "text": "Repeat to yourself: \"#,#,#\"" },
+    { "text": "Breath in. Breath Out." }
+  ],
+  "afirmations": [
+    { "text": "Breath in. Breath Out." },
+    { "text": "i am alive" }
+  ]
 }
