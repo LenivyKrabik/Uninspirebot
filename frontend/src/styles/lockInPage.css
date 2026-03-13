@@ -1,0 +1,28 @@
+.lockInBody {
+  height: 1000px;
+  width: 100%;
+
+  background-color: rgb(52, 16, 85);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.enterLockInButton {
+  height: fit-content;
+  width: fit-content;
+  padding-right: 5px;
+  padding-left: 5px;
+
+  font-size: 30pt;
+  font-family:
+    "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande", "Lucida Sans",
+    Arial, sans-serif;
+
+  transition: all ease 1s;
+}
+
+.enterLockInButton.fading {
+  opacity: 0%;
+}
