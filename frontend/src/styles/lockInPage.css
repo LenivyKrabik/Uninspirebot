@@ -1,5 +1,5 @@
 .lockInBody {
-  height: 1000px;
+  height: calc(100vh - 50px);
   width: 100%;
 
   background-color: rgb(52, 16, 85);
