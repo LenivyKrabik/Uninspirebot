@@ -3,6 +3,12 @@ import WisdomBuilder from "./wisdomBuilder.ts";
 import wisdomComponentsStorage from "./wisdomComponentsStorage.json" with { type: "json" };
 import AuthProxyElevenlabs from "./services/elevenlabs.ts";
 
+type Alignment = {
+  characters: Array<string>;
+  character_start_times_seconds: Array<number>;
+  character_end_times_seconds: Array<number>;
+};
+
 const wisdomGenerator = new WisdomBuilder(wisdomComponentsStorage);
 const ElevenlabsProxy = new AuthProxyElevenlabs();
 
@@ -45,19 +51,17 @@ const getTextTimedAudioWisdom = async (
   if (answer === undefined || !answer.ok) {
     console.log("Oopse, something went wrong");
   } else {
-    //Transforming stream into workable object
-    const bufferedContent = Buffer.from(await answer.arrayBuffer());
-    const stringifiedContent = bufferedContent.toString("binary");
-    const content = JSON.parse(stringifiedContent);
+    const content = await answer.json();
 
     //Deviding content
-    const audio = Buffer.from(content.audio_base64, "base64");
+    const audio: string = content.audio_base64;
+    const alignment: Alignment = content.alignment;
     const timedAudio = {
       audio: audio,
-      alignment: content.alignment,
+      alignment: alignment,
       text: wisdomText,
     };
-
+    console.log(audio);
     reply.header("content-type", "application/json").send(timedAudio);
   }
 };
