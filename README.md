@@ -4,9 +4,6 @@ Clone of inspirobot.me but worse
 
 ## ToDo list:
 
-- Body
-- Routing
-- Add home button functionality
 - Don't just put any on servicesContext.ts on export object
 - Proper error signaling in backend.ts
 - In wisdomBuilder.ts make static function for assignComponent on abstract class, so i wouldn't need to copy it couple of times
@@ -21,6 +18,8 @@ Clone of inspirobot.me but worse
 - NotFound page
 - Finish working on lab 8 in elevenlabs.ts
 - Finish lokcIN page
+- Make more errors intead of logs on path handlers on backend
+- Make proper error handing on frontend comunication with backend
 
 # Ideas to implement labs:
 
