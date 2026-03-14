@@ -1,11 +1,17 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "../styles/lockInPage.css";
+import backend from "../services/backend";
+import Player from "./player";
+
+const getRandomInt = (min: number, max: number) => {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+};
 
 function LockInScreen() {
   const [lockedIn, setLockedIn] = useState(false);
   const [buttonClass, setButtonClass] = useState("enterLockInButton");
-  const [topDistance, setTopDistance] = useState(0);
-  const [leftDistance, setLeftDistance] = useState(0);
+  const [textPosition, setTextPosition] = useState({ top: 0, left: 0 });
+  const [wisdomCount, setWisdomCount] = useState(0);
 
   //Starting LockIn sesion
   const enterLockedInState = () => {
@@ -14,6 +20,19 @@ function LockInScreen() {
       setLockedIn(true);
     }, 1000);
   };
+
+  const lockInWisdomCycle = async () => {
+    if (lockedIn) {
+      //await backend.getTextTimedAudioWisdom();
+      //await backend.getTestTextWisdom();
+      setTextPosition({ top: getRandomInt(6, 80), left: getRandomInt(6, 80) });
+      //wisdomcount++;
+    }
+  };
+
+  useEffect(() => {
+    lockInWisdomCycle();
+  }, [wisdomCount]);
 
   if (!lockedIn) {
     return (
@@ -24,22 +43,20 @@ function LockInScreen() {
       </div>
     );
   } else {
-    let wisdomNumber = 0;
-
-    useEffect(() => {
-      //Need to put logic for whole cycle
-      wisdomNumber++;
-    }, [wisdomNumber]);
-
+    if (wisdomCount === 0) setWisdomCount(1);
     return (
       <div className="lockInBody">
         <div
           style={{
-            position: "static",
-            top: topDistance + "%",
-            left: leftDistance + "%",
+            position: "absolute",
+            top: textPosition.top + "%",
+            left: textPosition.left + "%",
+            width: "100px",
+            height: "100px",
           }}
-        ></div>
+        >
+          <Player url={"data:audio/mpeg;base64,"} />
+        </div>
       </div>
     );
   }
