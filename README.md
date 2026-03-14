@@ -20,6 +20,8 @@ Clone of inspirobot.me but worse
 - Finish lokcIN page
 - Make more errors intead of logs on path handlers on backend
 - Make proper error handing on frontend comunication with backend
+- Fix copying of code in backend.ts
+- Make lab 3 on backend with audios
 
 # Ideas to implement labs:
 
