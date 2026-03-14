@@ -19,6 +19,8 @@ Clone of inspirobot.me but worse
 - Add test
 - Make it look pretier💅
 - NotFound page
+- Finish working on lab 8 in elevenlabs.ts
+- Finish lokcIN page
 
 # Ideas to implement labs:
 
