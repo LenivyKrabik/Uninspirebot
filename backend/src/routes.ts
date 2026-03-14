@@ -3,7 +3,11 @@ import type {
   FastifyPluginOptions,
   FastifyPluginAsync,
 } from "fastify";
-import { getTestTextWisdom, getTextWisdom } from "./routesHandlers.ts";
+import {
+  getTestTextWisdom,
+  getTextTimedAudioWisdom,
+  getTextWisdom,
+} from "./routesHandlers.ts";
 
 const routes: FastifyPluginAsync = async (
   fastify: FastifyInstance,
@@ -11,6 +15,7 @@ const routes: FastifyPluginAsync = async (
 ) => {
   fastify.get("/testTextWisdom", getTestTextWisdom);
   fastify.get("/textWisdom", getTextWisdom);
+  fastify.get("/textTimedAudio", getTextTimedAudioWisdom);
 };
 
 export default routes;

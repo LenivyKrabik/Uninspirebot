@@ -69,7 +69,7 @@
     {
       "text": "when thinking about #, always remember about #",
       "variables": [
-        [{ "type": "noun" }, { "type": "verb" }],
+        [{ "type": "noun" }, { "type": "gerund" }],
         [{ "type": "noun" }]
       ]
     },
