@@ -61,7 +61,6 @@ const getTextTimedAudioWisdom = async (
       alignment: alignment,
       text: wisdomText,
     };
-    console.log(audio);
     reply.header("content-type", "application/json").send(timedAudio);
   }
 };
