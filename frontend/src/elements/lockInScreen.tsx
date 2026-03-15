@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import "../styles/lockInPage.css";
 import backend from "../services/backend";
-import useAudio from "./player";
+import useAudio from "./useAudio";
 
 const getRandomInt = (min: number, max: number) => {
   return Math.floor(Math.random() * (max - min + 1)) + min;
