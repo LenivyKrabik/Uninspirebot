@@ -26,3 +26,7 @@
 .enterLockInButton.fading {
   opacity: 0%;
 }
+
+.wisdomText {
+  font-size: 180%;
+}
