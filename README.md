@@ -11,7 +11,6 @@ Clone of inspirobot.me but worse
 - Make so no connection to backend doesn't crash frontend
 - Make more phrases
 - Review wisdomBuilder.ts
-- Fix dots at the end of the sentances
 - Add cors for right addresses access to backend only
 - Add test
 - Make it look pretier💅
@@ -22,6 +21,10 @@ Clone of inspirobot.me but worse
 - Make proper error handing on frontend comunication with backend
 - Fix copying of code in backend.ts
 - Make lab 3 on backend with audios
+- Use 3 lab with database of some sort
+- Make lockIn mode text not sometimes go into unexistant space on screen
+- Set max characters amount on audios on backend
+- Fix invalid url spam in lockIn mode
 
 # Ideas to implement labs:
 
