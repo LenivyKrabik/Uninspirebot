@@ -19,7 +19,7 @@ async function getTextWisdom() {
 }
 
 async function getTextTimedAudioWisdom(): Promise<{
-  audio: any;
+  audio: string;
   alignment: any;
   text: string;
 }> {
