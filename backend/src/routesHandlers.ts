@@ -15,7 +15,9 @@ const ElevenlabsProxy = new AuthProxyElevenlabs();
 const getFormatedTextWisdom = () => {
   const wisdom = wisdomGenerator.createWisdom();
   let wisdomText = wisdom.showText();
+
   wisdomText = wisdomText.charAt(0).toUpperCase() + wisdomText.slice(1);
+  if (wisdomText.charAt(wisdomText.length - 1) !== ".") wisdomText += ".";
   return wisdomText;
 };
 const getTestTextWisdom = (req: FastifyRequest, reply: FastifyReply) => {
