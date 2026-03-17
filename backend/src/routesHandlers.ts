@@ -2,6 +2,7 @@ import type { FastifyReply, FastifyRequest } from "fastify";
 import WisdomBuilder from "./wisdomBuilder.ts";
 import wisdomComponentsStorage from "./wisdomComponentsStorage.json" with { type: "json" };
 import AuthProxyElevenlabs from "./services/elevenlabs.ts";
+import memoize from "./memoizationFunction.ts";
 
 type Alignment = {
   characters: Array<string>;
@@ -9,8 +10,11 @@ type Alignment = {
   character_end_times_seconds: Array<number>;
 };
 
+const TotalyDBPath = "/home/lenivy_krabik/KPI/Uninspirebot/AbsolutleyTotalyADB/";
+
 const wisdomGenerator = new WisdomBuilder(wisdomComponentsStorage);
 const ElevenlabsProxy = new AuthProxyElevenlabs();
+const cachedAPI = memoize(ElevenlabsProxy.makeRequest.bind(ElevenlabsProxy), TotalyDBPath, "unlimited", "LRU");
 
 const getFormatedTextWisdom = () => {
   const wisdom = wisdomGenerator.createWisdom();
@@ -28,32 +32,22 @@ const getTextWisdom = (req: FastifyRequest, reply: FastifyReply) => {
   reply.send(wisdomText);
 };
 
-const getTextTimedAudioWisdom = async (
-  req: FastifyRequest,
-  reply: FastifyReply,
-) => {
+const getTextTimedAudioWisdom = async (req: FastifyRequest, reply: FastifyReply) => {
   const wisdomText = getFormatedTextWisdom();
 
   //Making voiceover request
   const headers = new Headers();
   headers.append("Content-Type", "application/json");
-  const answer = await ElevenlabsProxy.makeRequest(
-    "https://api.elevenlabs.io/v1/text-to-speech/iiidtqDt9FBdT1vfBluA/with-timestamps",
-    {
+  try {
+    const content = await cachedAPI("https://api.elevenlabs.io/v1/text-to-speech/iiidtqDt9FBdT1vfBluA/with-timestamps", {
       method: "POST",
       body: JSON.stringify({
         text: wisdomText,
         output_format: "mp3_22050_128",
       }),
       headers: headers,
-    },
-  );
-
-  //Process answer
-  if (answer === undefined || !answer.ok) {
-    console.log("Oopse, something went wrong");
-  } else {
-    const content = await answer.json();
+    });
+    //Process answer
 
     //Deviding content
     const audio: string = content.audio_base64;
@@ -64,6 +58,9 @@ const getTextTimedAudioWisdom = async (
       text: wisdomText,
     };
     reply.header("content-type", "application/json").send(timedAudio);
+  } catch (err) {
+    console.log("Failed to get textTimedAudio with memoization");
+    reply.status(500).send({ error: "Internal error" });
   }
 };
 export { getTestTextWisdom, getTextWisdom, getTextTimedAudioWisdom };

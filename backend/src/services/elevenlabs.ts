@@ -48,7 +48,7 @@ class AuthProxyElevenlabs {
   constructor(method: AuthMethod = "API Key") {
     this.authMethod = method;
   }
-  makeRequest(url: string, options: RequestInit = {}) {
+  async makeRequest(url: string, options: RequestInit = {}) {
     const request = new Request(url, options);
     switch (this.authMethod) {
       case "OAuth":
@@ -57,7 +57,8 @@ class AuthProxyElevenlabs {
       case "API Key":
         if (API_KEY === undefined) throw new Error("Can't get API key");
         request.headers.append("xi-api-key", API_KEY);
-        return fetch(request);
+        const response = await fetch(request);
+        return await response.json();
       case "JWT":
         console.log("Not implemented yet");
         break;
