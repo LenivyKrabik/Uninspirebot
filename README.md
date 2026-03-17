@@ -28,20 +28,19 @@ Clone of inspirobot.me but worse
 
 ## Lab 1:
 
--
+- Make id's generator for saved wisdoms to show later
 
 ## Lab 2: ✓
 
 Already done
 
-## Lab 3:
+## Lab 3: ✓
 
-- For photo backgrounds
-- With elevenlabs api calls
+With elevenlabs api calls
 
 ## Lab 4:
 
--
+- Base particles and soundefects choose on bi-directional priority queue
 
 ## Lab 5:
 
@@ -50,10 +49,12 @@ Already done
 ## Lab 6:
 
 - Use for claude integration for lab 8
+- Use for initializing cache for memoization of elevenlabs calls
 
 ## Lab 7:
 
--
+- Change lock in cycle to be event base instead of basing on useEffect
+- Make event base particles or backgroung soundeffects in lock in mode
 
 ## Lab 8:
 
@@ -64,3 +65,10 @@ Already done
 ## Lab 9:
 
 -
+
+# General ideas:
+
+- Make ability to save wisdoms and later view and share them
+- Make particles or backgroung soundeffects in lock in mode
+- Wisdoms creator
+- LLM integreation to make new personolized words
