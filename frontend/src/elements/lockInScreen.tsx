@@ -51,9 +51,9 @@ function LockInScreen() {
       }
 
       const audioFinishTime = wisdom.alignment.character_end_times_seconds[textLength - 1];
-      eventManager.current.emit("wisdomEnd");
       setTimeout(
         () => {
+          eventManager.current.emit("wisdomEnd");
           setShownWisdomText("");
           setWisdomCount((c) => c + 1);
         },
