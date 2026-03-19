@@ -1,4 +1,5 @@
 import type { FastifyReply, FastifyRequest } from "fastify";
+import fs from "fs";
 import WisdomBuilder from "./wisdomBuilder.ts";
 import wisdomComponentsStorage from "./wisdomComponentsStorage.json" with { type: "json" };
 import AuthProxyElevenlabs from "./services/elevenlabs.ts";
@@ -11,6 +12,7 @@ type Alignment = {
 };
 
 const TotalyDBPath = "/home/lenivy_krabik/KPI/Uninspirebot/AbsolutleyTotalyADB/";
+const SoundEffectFolder = "/home/lenivy_krabik/KPI/Uninspirebot/SoundEffects/";
 
 const wisdomGenerator = new WisdomBuilder(wisdomComponentsStorage);
 const ElevenlabsProxy = new AuthProxyElevenlabs();
@@ -63,4 +65,11 @@ const getTextTimedAudioWisdom = async (req: FastifyRequest, reply: FastifyReply)
     reply.status(500).send({ error: "Internal error" });
   }
 };
-export { getTestTextWisdom, getTextWisdom, getTextTimedAudioWisdom };
+
+const getSoundEffect = (req: FastifyRequest<{ Body: { id: number } }>, reply: FastifyReply) => {
+  const allSoundEffects = fs.readdirSync(SoundEffectFolder);
+  const audio = fs.readFileSync(SoundEffectFolder + allSoundEffects[req.body.id]).toString("base64");
+  reply.send({ audio });
+};
+
+export { getTestTextWisdom, getTextWisdom, getTextTimedAudioWisdom, getSoundEffect };

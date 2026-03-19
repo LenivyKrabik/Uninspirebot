@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import "../styles/lockInPage.css";
 import backend from "../services/backend";
 import useAudio from "./useAudio";
+import EventEmitter from "../services/eventEmitter";
 
 const getRandomInt = (min: number, max: number) => {
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -13,7 +14,9 @@ function LockInScreen() {
   const [textPosition, setTextPosition] = useState({ top: 0, left: 0 });
   const [wisdomCount, setWisdomCount] = useState(0);
   const [shownWisdomText, setShownWisdomText] = useState("");
-  const { playingAudio, toggleAudio, changeAudio } = useAudio("");
+  const [playingWisdomAudio, toggleWisdomAudio, changeWisdomAudio] = useAudio("");
+  const [playingEffectAudio, toggleEffectAudio, changeEffectAudio] = useAudio("");
+  const eventManager = useRef(new EventEmitter());
 
   const audioSettings = "data:audio/mpeg;base64,";
 
@@ -30,15 +33,14 @@ function LockInScreen() {
       const wisdom = await backend.getTextTimedAudioWisdom();
       //await backend.getTestTextWisdom();
       setTextPosition({ top: getRandomInt(6, 60), left: getRandomInt(6, 50) });
-      changeAudio(audioSettings + wisdom.audio);
-      toggleAudio();
+      changeWisdomAudio(audioSettings + wisdom.audio);
+      toggleWisdomAudio();
 
       //Adding typewriter effect with custom timings from alignment
       const textLength = wisdom.text.length;
       for (let charId = 0; charId <= textLength; charId++) {
         const char = wisdom.alignment.characters[charId];
-        const charStartTime =
-          wisdom.alignment.character_start_times_seconds[charId];
+        const charStartTime = wisdom.alignment.character_start_times_seconds[charId];
 
         setTimeout(() => {
           setShownWisdomText((c) => {
@@ -48,8 +50,8 @@ function LockInScreen() {
         }, charStartTime * 1000);
       }
 
-      const audioFinishTime =
-        wisdom.alignment.character_end_times_seconds[textLength - 1];
+      const audioFinishTime = wisdom.alignment.character_end_times_seconds[textLength - 1];
+      eventManager.current.emit("wisdomEnd");
       setTimeout(
         () => {
           setShownWisdomText("");
@@ -57,10 +59,26 @@ function LockInScreen() {
         },
         (audioFinishTime + 1) * 1000,
       );
-
-      //wisdomcount++;
     }
   };
+
+  const soundEffect = async () => {
+    const audio = await backend.getSoundEffect(getRandomInt(0, 2));
+    changeEffectAudio(audioSettings + audio);
+    toggleEffectAudio();
+  };
+
+  const visualEffect = () => {};
+
+  //On mount and on unmount
+  useEffect(() => {
+    eventManager.current.on("wisdomEnd", () => {
+      soundEffect();
+    });
+    eventManager.current.on("wisdomEnd", () => {
+      visualEffect();
+    });
+  }, []);
 
   useEffect(() => {
     lockInWisdomCycle();

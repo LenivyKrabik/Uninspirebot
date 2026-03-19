@@ -31,8 +31,27 @@ async function getTextTimedAudioWisdom(): Promise<{
   }
 }
 
+async function getSoundEffect(id: number) {
+  const headers = new Headers();
+  headers.append("Content-Type", "application/json");
+  const req = new Request(backendURL + "soundEffect", {
+    method: "POST",
+    body: JSON.stringify({
+      id: id,
+    }),
+    headers: headers,
+  });
+  const answer = await fetch(req);
+  if (!answer.ok) throw new Error("Can't connect to backend");
+  else {
+    const { audio } = await answer.json();
+    return audio;
+  }
+}
+
 export default {
   getTestTextWisdom: getTestTextWisdom,
   getTextWisdom: getTextWisdom,
   getTextTimedAudioWisdom: getTextTimedAudioWisdom,
+  getSoundEffect: getSoundEffect,
 };
