@@ -23,12 +23,20 @@ Clone of inspirobot.me but worse
 - Make lockIn mode text not sometimes go into unexistant space on screen
 - Set max characters amount on audios on backend
 - Fix invalid url spam in lockIn mode
+- Make proper codes for routes
+- Add more typing where needed
+- Make event emmiter in front id not just a number
+- Cache soundeffects on client side
+- Instead of hardoding soundeefects amount get it from backend
+- Time between wisdoms
+- Finish visual effects
 
 # Ideas to implement labs:
 
 ## Lab 1:
 
 - Make id's generator for saved wisdoms to show later
+- Generator half in event file on front
 
 ## Lab 2: ✓
 
