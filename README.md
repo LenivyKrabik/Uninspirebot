@@ -4,32 +4,28 @@ Clone of inspirobot.me but worse
 
 ## ToDo list:
 
-- Don't just put any on servicesContext.ts on export object
-- Proper error signaling in backend.ts
+- Deal with possible not correct answer type in textTimedAudio route handler
 - In wisdomBuilder.ts make static function for assignComponent on abstract class, so i wouldn't need to copy it couple of times
 - Afirmations and mantras
-- Make so no connection to backend doesn't crash frontend
 - Make more phrases
 - Review wisdomBuilder.ts
 - Add cors for right addresses access to backend only
 - Add test
 - Make it look pretier💅
 - NotFound page
-- Finish working on lab 8 in elevenlabs.ts
-- Make more errors intead of logs on path handlers on backend
 - Make proper error handing on frontend comunication with backend
 - Fix copying of code in backend.ts
 - Use 3 lab with database of some sort
 - Make lockIn mode text not sometimes go into unexistant space on screen
-- Set max characters amount on audios on backend
 - Fix invalid url spam in lockIn mode
-- Make proper codes for routes
 - Add more typing where needed
 - Make event emmiter in front id not just a number
-- Cache soundeffects on client side
-- Instead of hardoding soundeefects amount get it from backend
+- Cache sound effects on client side
+- Instead of hardcoding sound efects amount get it from backend
 - Time between wisdoms
 - Finish visual effects
+- Make so not getting wisdom in lockInCycle woudn't stop it entirely
+- Signal that can't get to backend in homePage and lockInScreen
 
 # Ideas to implement labs:
 
@@ -64,10 +60,8 @@ With elevenlabs api calls
 - Change lock in cycle to be event base instead of basing on useEffect
 - Make event base particles or backgroung soundeffects in lock in mode
 
-## Lab 8:
+## Lab 8: ✓
 
-- Make Claude integration to generate new components base on some data user provides
-- Make Google login
 - Make ElevenLabs voices
 
 ## Lab 9:
