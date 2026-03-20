@@ -11,8 +11,17 @@ type Alignment = {
   character_end_times_seconds: Array<number>;
 };
 
+type TextTimedAudio = {
+  audio_base64: string;
+  alignment: Alignment;
+  text: string;
+};
+
 const TotalyDBPath = "/home/lenivy_krabik/KPI/Uninspirebot/AbsolutleyTotalyADB/";
 const SoundEffectFolder = "/home/lenivy_krabik/KPI/Uninspirebot/SoundEffects/";
+
+const voiceId = "iiidtqDt9FBdT1vfBluA";
+const audioOutputFormat = "mp3_22050_128";
 
 const wisdomGenerator = new WisdomBuilder(wisdomComponentsStorage);
 const ElevenlabsProxy = new AuthProxyElevenlabs();
@@ -27,53 +36,61 @@ const getFormatedTextWisdom = () => {
   return wisdomText;
 };
 const getTestTextWisdom = (req: FastifyRequest, reply: FastifyReply) => {
-  reply.send("This is test wisdom, you allowed to not follow it");
+  reply.status(200).send("This is test wisdom, you allowed to not follow it");
 };
 const getTextWisdom = (req: FastifyRequest, reply: FastifyReply) => {
   const wisdomText = getFormatedTextWisdom();
-  reply.send(wisdomText);
+  reply.status(200).send(wisdomText);
 };
 
 const getTextTimedAudioWisdom = async (req: FastifyRequest, reply: FastifyReply) => {
   const wisdomText = getFormatedTextWisdom();
   if (wisdomText.length >= 300) {
-    console.log("Wisdom text is suspicously long, extra precautions activated");
     reply.status(500).send({ error: "Wisdom text is suspicously long, extra precautions activated" });
+    throw new Error("Wisdom text is suspicously long, extra precautions activated");
   }
 
   //Making voiceover request
-  const headers = new Headers();
-  headers.append("Content-Type", "application/json");
+  const headers = new Headers().append("Content-Type", "application/json");
   try {
-    const content = await cachedAPI("https://api.elevenlabs.io/v1/text-to-speech/iiidtqDt9FBdT1vfBluA/with-timestamps", {
+    const content: TextTimedAudio = await cachedAPI(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}/with-timestamps`, {
       method: "POST",
       body: JSON.stringify({
         text: wisdomText,
-        output_format: "mp3_22050_128",
+        output_format: audioOutputFormat,
       }),
       headers: headers,
     });
-    //Process answer
 
-    //Deviding content
-    const audio: string = content.audio_base64;
-    const alignment: Alignment = content.alignment;
+    if (!("audio" in content)) {
+      reply.status(502).send({ error: "Reply from Elevenlabs was not what we expected, couldn't make you request" });
+      throw new Error("Reply from Elevenlabs didn't have audio property");
+    }
+
+    //Process answer
     const timedAudio = {
-      audio: audio,
-      alignment: alignment,
+      audio: content.audio_base64,
+      alignment: content.alignment,
       text: wisdomText,
     };
-    reply.header("content-type", "application/json").send(timedAudio);
+    reply.status(200).header("content-type", "application/json").send(timedAudio);
   } catch (err) {
     console.log("Failed to get textTimedAudio with memoization");
     reply.status(500).send({ error: "Internal error" });
+    throw err;
   }
 };
 
 const getSoundEffect = (req: FastifyRequest<{ Body: { id: number } }>, reply: FastifyReply) => {
-  const allSoundEffects = fs.readdirSync(SoundEffectFolder);
-  const audio = fs.readFileSync(SoundEffectFolder + allSoundEffects[req.body.id]).toString("base64");
-  reply.send({ audio });
+  try {
+    const allSoundEffects = fs.readdirSync(SoundEffectFolder);
+    const audio = fs.readFileSync(SoundEffectFolder + allSoundEffects[req.body.id]).toString("base64");
+    reply.status(200).send({ audio });
+  } catch (err) {
+    console.log("Failed to get sound effect");
+    reply.status(500).send({ error: "Internal error" });
+    throw err;
+  }
 };
 
 export { getTestTextWisdom, getTextWisdom, getTextTimedAudioWisdom, getSoundEffect };
