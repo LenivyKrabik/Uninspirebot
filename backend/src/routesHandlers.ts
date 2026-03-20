@@ -36,6 +36,10 @@ const getTextWisdom = (req: FastifyRequest, reply: FastifyReply) => {
 
 const getTextTimedAudioWisdom = async (req: FastifyRequest, reply: FastifyReply) => {
   const wisdomText = getFormatedTextWisdom();
+  if (wisdomText.length >= 300) {
+    console.log("Wisdom text is suspicously long, extra precautions activated");
+    reply.status(500).send({ error: "Wisdom text is suspicously long, extra precautions activated" });
+  }
 
   //Making voiceover request
   const headers = new Headers();
