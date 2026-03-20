@@ -10,8 +10,8 @@ function HomePage() {
   return (
     <div className="homePage">
       <button
-        onClick={() => {
-          setWisdom(backend.getTextWisdom());
+        onClick={async () => {
+          setWisdom(await backend.getTextWisdom());
         }}
       >
         Generate test wisdom

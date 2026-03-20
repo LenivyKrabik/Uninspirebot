@@ -1,3 +1,9 @@
+type Alignment = {
+  characters: Array<string>;
+  character_start_times_seconds: Array<number>;
+  character_end_times_seconds: Array<number>;
+};
+
 const backendURL = "http://localhost:3000/";
 
 async function getTestTextWisdom() {
@@ -20,7 +26,7 @@ async function getTextWisdom() {
 
 async function getTextTimedAudioWisdom(): Promise<{
   audio: string;
-  alignment: any;
+  alignment: Alignment;
   text: string;
 }> {
   const answer = await fetch(backendURL + "textTimedAudio");
@@ -44,7 +50,7 @@ async function getSoundEffect(id: number) {
   const answer = await fetch(req);
   if (!answer.ok) throw new Error("Can't connect to backend");
   else {
-    const { audio } = await answer.json();
+    const { audio } = (await answer.json()) as { audio: string };
     return audio;
   }
 }

@@ -1,8 +1,8 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useContext } from "react";
 import "../styles/lockInPage.css";
-import backend from "../services/backend";
 import useAudio from "./useAudio";
 import EventEmitter from "../services/eventEmitter";
+import ServicesContext from "../services/servicesContext";
 
 const getRandomInt = (min: number, max: number) => {
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -17,6 +17,8 @@ function LockInScreen() {
   const [playingWisdomAudio, toggleWisdomAudio, changeWisdomAudio] = useAudio("");
   const [playingEffectAudio, toggleEffectAudio, changeEffectAudio] = useAudio("");
   const eventManager = useRef(new EventEmitter());
+
+  const { backend } = useContext(ServicesContext);
 
   const audioSettings = "data:audio/mpeg;base64,";
 
