@@ -83,6 +83,10 @@ const getTextTimedAudioWisdom = async (req: FastifyRequest, reply: FastifyReply)
 
 const getSoundEffect = (req: FastifyRequest<{ Body: { id: number } }>, reply: FastifyReply) => {
   try {
+    if ("id" in req.body && typeof req.body.id !== "number") {
+      reply.status(400).send({ error: "Data sent had wrong type" });
+      return;
+    }
     const allSoundEffects = fs.readdirSync(SoundEffectFolder);
     const audio = fs.readFileSync(SoundEffectFolder + allSoundEffects[req.body.id]).toString("base64");
     reply.status(200).send({ audio });
