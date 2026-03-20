@@ -51,7 +51,8 @@ const getTextTimedAudioWisdom = async (req: FastifyRequest, reply: FastifyReply)
   }
 
   //Making voiceover request
-  const headers = new Headers().append("Content-Type", "application/json");
+  const headers = new Headers();
+  headers.append("Content-Type", "application/json");
   try {
     const content: TextTimedAudio = await cachedAPI(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}/with-timestamps`, {
       method: "POST",
