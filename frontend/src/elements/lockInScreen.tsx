@@ -33,6 +33,7 @@ function LockInScreen() {
   const lockInWisdomCycle = async () => {
     if (lockedIn) {
       const wisdom = await backend.getTextTimedAudioWisdom();
+      if (wisdom === undefined) return; //ToDo: signal that can't connect to backend
       //await backend.getTestTextWisdom();
       setTextPosition({ top: getRandomInt(6, 60), left: getRandomInt(6, 50) });
       changeWisdomAudio(audioSettings + wisdom.audio);
@@ -66,6 +67,8 @@ function LockInScreen() {
 
   const soundEffect = async () => {
     const audio = await backend.getSoundEffect(getRandomInt(0, 2));
+    if (audio === undefined) return console.warn("Can't get soundeffect");
+
     changeEffectAudio(audioSettings + audio);
     toggleEffectAudio();
   };

@@ -7,15 +7,15 @@ function HomePage() {
 
   let [wisdom, setWisdom] = useState("");
 
+  const getText = async () => {
+    const wisdomReqResult = await backend.getTextWisdom();
+    if (wisdomReqResult === undefined) return; //ToDo: signal that can't connect to backend
+    setWisdom(wisdomReqResult);
+  };
+
   return (
     <div className="homePage">
-      <button
-        onClick={async () => {
-          setWisdom(await backend.getTextWisdom());
-        }}
-      >
-        Generate test wisdom
-      </button>
+      <button onClick={getText}>Generate test wisdom</button>
       <h1>{wisdom}</h1>
     </div>
   );
