@@ -25,6 +25,7 @@ export default ttsWithTimedAudio;*/
 
 //Doing all of this while imagining that elevenlabs npm package does not exist
 //Also if not labs witohut package it still would be more practical to use builder
+
 const API_KEY = process.env.ELEVENLABS_UNINSPIREBOT_API_KEY;
 
 //Implementation 1 (with function)
@@ -50,18 +51,12 @@ class AuthProxyElevenlabs {
   }
   async makeRequest(url: string, options: RequestInit = {}) {
     const request = new Request(url, options);
-    switch (this.authMethod) {
-      case "OAuth":
-        console.log("Not implemented yet");
-        break;
-      case "API Key":
-        if (API_KEY === undefined) throw new Error("Can't get API key");
-        request.headers.append("xi-api-key", API_KEY);
-        const response = await fetch(request);
-        return await response.json();
-      case "JWT":
-        console.log("Not implemented yet");
-        break;
+    let response;
+    if (this.authMethod === "API Key") {
+      if (API_KEY === undefined) throw new Error("Can't get API key");
+      request.headers.append("xi-api-key", API_KEY);
+      response = await fetch(request);
+      return await response.json();
     }
   }
   swapAuthMethod(method: AuthMethod) {
