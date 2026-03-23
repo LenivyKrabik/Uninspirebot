@@ -26,6 +26,8 @@ Clone of inspirobot.me but worse
 - Finish visual effects
 - Make so not getting wisdom in lockInCycle woudn't stop it entirely
 - Signal that can't get to backend in homePage and lockInScreen
+- Make all of the events go through one event emiter instance using services
+- Add check weathere there are any items in queue
 
 # Ideas to implement labs:
 
@@ -55,9 +57,8 @@ With elevenlabs api calls
 - Use for claude integration for lab 8
 - Use for initializing cache for memoization of elevenlabs calls
 
-## Lab 7:
+## Lab 7: ✓
 
-- Change lock in cycle to be event base instead of basing on useEffect
 - Make event base particles or backgroung soundeffects in lock in mode
 
 ## Lab 8: ✓
