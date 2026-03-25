@@ -5,7 +5,7 @@ Requirements:
 	✓	Log function arguments and return values.
 	•	Support both sync and async functions.
 2.	Features:
-	•	Allow logging to ✓console, ✓file, or external services.
+	✓	Allow logging to console, file, or external services.
 	✓	Provide a timestamp for each log entry.
 	✓	Support conditional logging (e.g., only log errors).
 	✓	Include execution time profiling (optional).
@@ -32,7 +32,7 @@ type FunctionUseReport = {
 
 type LogLevel = "INFO" | "ERROR";
 type LogVaraint = "CONSOLE" | "FILE" | "CUSTOM";
-type LogDestination = string | undefined; //Add custom path
+type LogDestination = string | ((text: string) => void) | undefined; //Add custom path
 
 const standartLogFormater = (report: FunctionUseReport) => {
   return JSON.stringify(report);
@@ -53,10 +53,12 @@ const log = (
         console.log(formatedReport);
         break;
       case "FILE":
-        fs.appendFileSync(logDestination!, formatedReport);
+        if (typeof logDestination !== "string") throw new Error("Log path is not a path");
+        fs.appendFileSync(logDestination, formatedReport);
         break;
       case "CUSTOM":
-      //ToDo
+        if (typeof logDestination !== "function") throw new Error("Callback is not a function");
+        logDestination(formatedReport);
     }
   }
 };
