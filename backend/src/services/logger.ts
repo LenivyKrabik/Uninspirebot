@@ -3,7 +3,7 @@ Requirements:
 1.	Logging Decorator Implementation
 	✓	Accept a log level (INFO, DEBUG, ERROR).
 	✓	Log function arguments and return values.
-	•	Support both sync and async functions.
+	✓	Support both sync and async functions.
 2.	Features:
 	✓	Allow logging to console, file, or external services.
 	✓	Provide a timestamp for each log entry.
@@ -19,7 +19,9 @@ Requirements:
 /*
 My notes:
 - Fix situation when file to write to doesn't exist
+- Technically there is an edge case, for factories or builders that return Promises as final product
 */
+import { error } from "console";
 import fs from "fs";
 
 type FunctionUseReport = {
@@ -76,18 +78,30 @@ const logger = (
       functionUseReport.agrs = args;
       functionUseReport.callTime = new Date();
       let result;
+      const settleAnswer = (answer: any) => {
+        functionUseReport.result = answer;
+        functionUseReport.doneTime = new Date();
+        log(functionUseReport, logLevel, logFormater, logVariant, logDestination);
+      };
       try {
         result = fn(...args);
       } catch (error) {
         result = error;
       }
 
-      functionUseReport.result = result;
-      functionUseReport.doneTime = new Date();
-
-      log(functionUseReport, logLevel, logFormater, logVariant, logDestination);
-
-      if (Object.getPrototypeOf(result).constructor === Error) throw result;
+      if (Object.getPrototypeOf(result).constructor === Promise) {
+        result
+          .then((answer: any) => {
+            settleAnswer(answer);
+          })
+          .catch((error: Error) => {
+            settleAnswer(error);
+            throw error;
+          });
+      } else {
+        settleAnswer(result);
+        if (Object.getPrototypeOf(result).constructor === Error) throw result;
+      }
       return result;
     };
   };
