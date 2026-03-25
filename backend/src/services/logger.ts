@@ -14,21 +14,54 @@ Requirements:
     •	@log(level="DEBUG") → Perhaps both variants at the same time?
 	•	@log(level="ERROR") → Logs only when an exception occurs.
 4.	Extensibility:
-	•	Allow custom log formatters.
+	✓	Allow custom log formatters.
 	•	Support structured logging (e.g., JSON output).
 */
 type FunctionUseReport = {
   name: string;
-  agrs: any[];
-  result: any;
-  callTime: Date;
-  doneTime: Date;
+  agrs?: any[];
+  result?: any;
+  callTime?: Date;
+  doneTime?: Date;
 };
 
-const logger = (logLevel: "INFO" | "DEBUG" | "ERROR") => {
+type LogLevel = "INFO" | "DEBUG" | "ERROR";
+
+const standartLogFormater = (report: FunctionUseReport) => {
+  return JSON.stringify(report);
+};
+
+const log = (report: string, logLevel: LogLevel) => {
+  switch (logLevel) {
+    case "INFO":
+    case "DEBUG":
+    case "ERROR":
+  }
+};
+
+const logger = (logLevel: LogLevel, logFormater: (report: FunctionUseReport) => string = standartLogFormater) => {
   return (fn: Function) => {
+    const functionUseReportBase: FunctionUseReport = { name: fn.name };
     return (...args: any[]) => {
-      return fn(...args);
+      const functionUseReport = structuredClone(functionUseReportBase);
+      functionUseReport.agrs = args;
+      functionUseReport.callTime = new Date();
+      let result;
+      try {
+        result = fn(...args);
+      } catch (error) {
+        result = error;
+      }
+
+      functionUseReport.result = result;
+      functionUseReport.doneTime = new Date();
+
+      const formatedReport = logFormater(functionUseReport);
+
+      log(formatedReport, logLevel);
+
+      if (Object.getPrototypeOf(result).constructor === Error) throw result;
+      return result;
     };
   };
 };
