@@ -1,19 +1,24 @@
 declare global {
   interface Array<T> {
-    mapAsync(applyFn: (element: T, index: number, array: T[]) => any, thisArg?: any): any[];
+    mapAsync(applyFn: (element: T, index: number, array: T[]) => any, thisArg?: any): Promise<any[]>;
   }
 }
 
 declare global {
   interface Array<T> {
-    mapAsyncCallback(applyFn: (element: T, index: number, array: T[]) => any, callbackFn: (result: any[]) => void, thisArg?: any): void;
+    mapAsyncCallback(
+      applyFn: (element: T, index: number, array: T[]) => any,
+      callbackFn: (result: any[]) => void,
+      thisArg?: any,
+    ): Promise<void>;
   }
 }
 
 Object.defineProperty(Array.prototype, "mapAsync", {
-  value: async function <T>(applyFn: (element?: T, index?: number, array?: T[]) => any, thisArg = undefined) {
+  value: async function <T>(applyFn: (element?: T, index?: number, array?: T[]) => any, thisArg: any = undefined, signal?: AbortSignal) {
     const newArray: any[] = [];
     for (let i = 0; i < this.length; i++) {
+      if (signal?.aborted) throw new Error("AbortError");
       newArray.push(await applyFn.call(thisArg, this[i], i, this));
     }
     return newArray;
@@ -25,10 +30,12 @@ Object.defineProperty(Array.prototype, "mapAsyncCallback", {
   value: async function <T>(
     applyFn: (element?: T, index?: number, array?: T[]) => any,
     callbackFn: (result: any[]) => void,
-    thisArg = undefined,
+    thisArg: any = undefined,
+    signal?: AbortSignal,
   ) {
     const newArray: any[] = [];
     for (let i = 0; i < this.length; i++) {
+      if (signal?.aborted) throw new Error("AbortError");
       newArray.push(await applyFn.call(thisArg, this[i], i, this));
     }
     callbackFn(newArray);
@@ -37,6 +44,7 @@ Object.defineProperty(Array.prototype, "mapAsyncCallback", {
   configurable: true,
 });
 
+// Usage
 const a = ["Hello", "everybody", "my", "name", "is", "Markiplyer"];
 console.table(
   await a.mapAsync((element, id, array) => {
