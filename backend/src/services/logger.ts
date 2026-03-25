@@ -2,21 +2,26 @@
 Requirements:
 1.	Logging Decorator Implementation
 	✓	Accept a log level (INFO, DEBUG, ERROR).
-	?	Log function arguments and return values.
+	✓	Log function arguments and return values.
 	•	Support both sync and async functions.
 2.	Features:
-	•	Allow logging to console, file, or external services.
-	•	Provide a timestamp for each log entry.
-	•	Support conditional logging (e.g., only log errors).
-	?	Include execution time profiling (optional).
+	•	Allow logging to ✓console, ✓file, or external services.
+	✓	Provide a timestamp for each log entry.
+	✓	Support conditional logging (e.g., only log errors).
+	✓	Include execution time profiling (optional).
 3.	Operations:
-	•	@log(level="INFO") → Logs function input/output at the INFO level.
-    •	@log(level="DEBUG") → Perhaps both variants at the same time?
-	•	@log(level="ERROR") → Logs only when an exception occurs.
+	✓	@log(level="INFO") → Logs function input/output at the INFO level.
+	✓	@log(level="ERROR") → Logs only when an exception occurs.
 4.	Extensibility:
 	✓	Allow custom log formatters.
 	•	Support structured logging (e.g., JSON output).
 */
+/*
+My notes:
+- Fix situation when file to write to doesn't exist
+*/
+import fs from "fs";
+
 type FunctionUseReport = {
   name: string;
   agrs?: any[];
@@ -25,21 +30,43 @@ type FunctionUseReport = {
   doneTime?: Date;
 };
 
-type LogLevel = "INFO" | "DEBUG" | "ERROR";
+type LogLevel = "INFO" | "ERROR";
+type LogVaraint = "CONSOLE" | "FILE" | "CUSTOM";
+type LogDestination = string | undefined; //Add custom path
 
 const standartLogFormater = (report: FunctionUseReport) => {
   return JSON.stringify(report);
 };
 
-const log = (report: string, logLevel: LogLevel) => {
-  switch (logLevel) {
-    case "INFO":
-    case "DEBUG":
-    case "ERROR":
+const log = (
+  report: FunctionUseReport,
+  logLevel: LogLevel,
+  logFormater: (report: FunctionUseReport) => string,
+  logVariant: LogVaraint,
+  logDestination: LogDestination,
+) => {
+  const formatedReport = logFormater(report);
+  const resultIsError = Object.getPrototypeOf(report.result).constructor === Error;
+  if (logLevel === "INFO" || (logLevel === "ERROR" && resultIsError)) {
+    switch (logVariant) {
+      case "CONSOLE":
+        console.log(formatedReport);
+        break;
+      case "FILE":
+        fs.appendFileSync(logDestination!, formatedReport);
+        break;
+      case "CUSTOM":
+      //ToDo
+    }
   }
 };
 
-const logger = (logLevel: LogLevel, logFormater: (report: FunctionUseReport) => string = standartLogFormater) => {
+const logger = (
+  logLevel: LogLevel,
+  logFormater: (report: FunctionUseReport) => string = standartLogFormater,
+  logVariant: LogVaraint = "CONSOLE",
+  logDestination?: LogDestination,
+) => {
   return (fn: Function) => {
     const functionUseReportBase: FunctionUseReport = { name: fn.name };
     return (...args: any[]) => {
@@ -56,9 +83,7 @@ const logger = (logLevel: LogLevel, logFormater: (report: FunctionUseReport) => 
       functionUseReport.result = result;
       functionUseReport.doneTime = new Date();
 
-      const formatedReport = logFormater(functionUseReport);
-
-      log(formatedReport, logLevel);
+      log(functionUseReport, logLevel, logFormater, logVariant, logDestination);
 
       if (Object.getPrototypeOf(result).constructor === Error) throw result;
       return result;
