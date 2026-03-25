@@ -1,15 +1,16 @@
 declare global {
   interface Array<T> {
-    mapAsync(applyFn: (element: T, index: number, array: T[]) => any, thisArg?: any): Promise<any[]>;
+    mapAsync(applyFn: (element?: T, index?: number, array?: T[]) => any, thisArg?: any, signal?: AbortSignal): Promise<any[]>;
   }
 }
 
 declare global {
   interface Array<T> {
     mapAsyncCallback(
-      applyFn: (element: T, index: number, array: T[]) => any,
+      applyFn: (element?: T, index?: number, array?: T[]) => any,
       callbackFn: (result: any[]) => void,
       thisArg?: any,
+      signal?: AbortSignal,
     ): Promise<void>;
   }
 }
@@ -62,3 +63,22 @@ let callbackResult;
   },
 ),
   console.table(callbackResult));
+
+// Abort functionality usage
+const controller = new AbortController();
+const signal = controller.signal;
+
+a.mapAsync(
+  (element, id, array) => {
+    return [element, id, array];
+  },
+  undefined,
+  signal,
+)
+  .then((value) => {
+    console.table(value);
+  })
+  .catch((error) => {
+    console.log(error);
+  });
+controller.abort();
