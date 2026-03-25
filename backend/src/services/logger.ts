@@ -25,9 +25,11 @@ type FunctionUseReport = {
   doneTime: Date;
 };
 
-const logger = (fn: Function, logLevel: "INFO" | "DEBUG" | "ERROR") => {
-  return (...args: any[]) => {
-    return fn(...args);
+const logger = (logLevel: "INFO" | "DEBUG" | "ERROR") => {
+  return (fn: Function) => {
+    return (...args: any[]) => {
+      return fn(...args);
+    };
   };
 };
 
