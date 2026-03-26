@@ -49,7 +49,8 @@ async function getTextTimedAudioWisdom(retries: number = 2): Promise<
   | undefined
 > {
   try {
-    const answer = await fetch(backendURL + "textWisdom");
+    const answer = await fetch(backendURL + "textTimedAudio");
+    console.log(answer);
     if (answer.ok) return await answer.json();
     console.warn(`Massage from server: ${(await answer.json()).error}`);
     if ((answer.status === 500 || answer.status === 502) && retries > 0) {

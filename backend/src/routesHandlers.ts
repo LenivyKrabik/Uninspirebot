@@ -63,7 +63,7 @@ const getTextTimedAudioWisdom = async (req: FastifyRequest, reply: FastifyReply)
       headers: headers,
     });
 
-    if (!("audio" in content)) {
+    if (!("audio_base64" in content)) {
       reply.status(502).send({ error: "Reply from Elevenlabs was not what we expected, couldn't make you request" });
       throw new Error("Reply from Elevenlabs didn't have audio property");
     }
