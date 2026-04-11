@@ -12,15 +12,15 @@ class PriorityQueue<T> {
     let indexToRemove;
     switch (identifier) {
       case "highest":
-        indexToRemove = this.priorityLane.reduce((acc, value, index, array) => {
-          const max = Math.max(array[acc], value);
-          return max === value ? index : acc;
+        indexToRemove = this.priorityLane.reduce((prevMax, value, index, array) => {
+          const max = Math.max(array[prevMax], value);
+          return max === value ? index : prevMax;
         }, 0);
         return { value: this.orderLane.splice(indexToRemove, 1), priority: this.priorityLane.splice(indexToRemove, 1) };
       case "lowest":
-        indexToRemove = this.priorityLane.reduce((acc, value, index, array) => {
-          const min = Math.min(array[acc], value);
-          return min === value ? index : acc;
+        indexToRemove = this.priorityLane.reduce((prevMin, value, index, array) => {
+          const min = Math.min(array[prevMin], value);
+          return min === value ? index : prevMin;
         }, 0);
         return { value: this.orderLane.splice(indexToRemove, 1), priority: this.priorityLane.splice(indexToRemove, 1) };
       case "oldest":
@@ -32,30 +32,30 @@ class PriorityQueue<T> {
     }
   }
   peek(identifier: itemIdentifier) {
-    let indexToRemove;
+    let indexToPeek;
     switch (identifier) {
       case "highest":
-        indexToRemove = this.priorityLane.reduce((acc, value, index, array) => {
+        indexToPeek = this.priorityLane.reduce((acc, value, index, array) => {
           const max = Math.max(array[acc], value);
           return max === value ? index : acc;
         }, 0);
         break;
       case "lowest":
-        indexToRemove = this.priorityLane.reduce((acc, value, index, array) => {
+        indexToPeek = this.priorityLane.reduce((acc, value, index, array) => {
           const min = Math.min(array[acc], value);
           return min === value ? index : acc;
         }, 0);
         break;
       case "oldest":
-        indexToRemove = 0;
+        indexToPeek = 0;
         break;
       case "newest":
-        indexToRemove = this.orderLane.length - 1;
+        indexToPeek = this.orderLane.length - 1;
         break;
       default:
         throw new Error(`Identifier: ${identifier} does not exist`);
     }
-    return { value: this.orderLane[indexToRemove], priority: this.priorityLane[indexToRemove] };
+    return { value: this.orderLane[indexToPeek], priority: this.priorityLane[indexToPeek] };
   }
 }
 
