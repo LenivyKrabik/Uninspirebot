@@ -47,6 +47,7 @@ With elevenlabs api calls
 ## Lab 4:
 
 - Base particles and soundefects choose on bi-directional priority queue
+- Make list of all phrases that can be rated and sorted by time and rating
 
 ## Lab 5:
 
@@ -54,12 +55,12 @@ With elevenlabs api calls
 
 ## Lab 6:
 
-- Use for claude integration for lab 8
+- Use for claude integration for LLM integreation to make new personolized words
 - Use for initializing cache for memoization of elevenlabs calls
 
 ## Lab 7: ✓
 
-- Make event base particles or backgroung soundeffects in lock in mode
+- Make event base particles and backgroung soundeffects in lock in mode
 
 ## Lab 8: ✓
 
@@ -67,7 +68,7 @@ With elevenlabs api calls
 
 ## Lab 9:
 
--
+- Use on route handlers
 
 # General ideas:
 
@@ -75,3 +76,4 @@ With elevenlabs api calls
 - Make particles or backgroung soundeffects in lock in mode
 - Wisdoms creator
 - LLM integreation to make new personolized words
+- Make list of all phrases that can be rated and sorted by time and rating
