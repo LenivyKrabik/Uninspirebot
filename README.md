@@ -17,7 +17,7 @@ Clone of inspirobot.me but worse
 - Fix copying of code in backend.ts
 - Use 3 lab with database of some sort
 - Make lockIn mode text not sometimes go into unexistant space on screen
-- Fix invalid url spam in lockIn mode
+- Fix invalid URI spam in lockIn mode
 - Add more typing where needed
 - Make event emmiter in front id not just a number
 - Cache sound effects on client side
@@ -29,8 +29,10 @@ Clone of inspirobot.me but worse
 - Make all of the events go through one event emiter instance using services
 - Add check weathere there are any items in queue
 - Rework api proxy
-- Balanse sound volume
+- VOLUMEEE CONTROLL
 - Unsubscribe sound and visual effects on unmount
+- Make lockInWisdomCycle not work just on useEffect but on events instead
+- Signal that wisdom is undefined and move on and not just stop in lockInCucle page
 
 # Ideas to implement labs:
 
@@ -44,18 +46,27 @@ Already done
 
 ## Lab 3: ✓
 
-With elevenlabs api calls
+# With elevenlabs api calls
+
 Implementation: Uninspirebot/backend/src/memoizationFunction.ts
+
 Use: Uninspirebot/backend/src/routesHandlers.ts
 
-## Lab 4:
+## Lab 4: ✓
 
 - Base particles and soundefects choose on bi-directional priority queue
 - Make list of all phrases that can be rated and sorted by time and rating
 
-## Lab 5:
+# Wisdoms queue
 
--
+Actuall implementation: Uninspirebot/frontend/src/services/simpleQueue.ts
+Full lab implementation (just in case): Uninspirebot/frontend/src/services/priorityQueue.ts
+
+Use: Uninspirebot/frontend/src/elements/lockInScreen.tsx
+
+## Lab 5: ✓
+
+Async usage: Uninspirebot/frontend/src/elements/lockInScreen.tsx (fillWisdomsQueue function)
 
 ## Lab 6:
 
@@ -64,8 +75,10 @@ Use: Uninspirebot/backend/src/routesHandlers.ts
 
 ## Lab 7: ✓
 
-Make event base particles and backgroung soundeffects in lock in mode
+# Make event base particles and backgroung soundeffects in lock in mode
+
 Implementation: Uninspirebot/frontend/src/services/eventEmitter.ts
+
 Use: Uninspirebot/frontend/src/elements/lockInScreen.tsx
 
 ## Lab 8: ✓
@@ -79,7 +92,7 @@ Use: Uninspirebot/frontend/src/elements/lockInScreen.tsx
 # General ideas:
 
 - Make ability to save wisdoms and later view and share them
-- Make particles or backgroung soundeffects in lock in mode
 - Wisdoms creator
 - LLM integreation to make new personolized words
 - Make list of all phrases that can be rated and sorted by time and rating
+- Make ability to export wisdoms
