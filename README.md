@@ -28,13 +28,15 @@ Clone of inspirobot.me but worse
 - Signal that can't get to backend in homePage and lockInScreen
 - Make all of the events go through one event emiter instance using services
 - Add check weathere there are any items in queue
+- Rework api proxy
+- Balanse sound volume
+- Unsubscribe sound and visual effects on unmount
 
 # Ideas to implement labs:
 
-## Lab 1:
+## Lab 1: ✓
 
-- Make id's generator for saved wisdoms to show later
-- Generator half in event file on front
+Generator: Uninspirebot/frontend/src/services/eventEmitter.ts
 
 ## Lab 2: ✓
 
@@ -43,6 +45,8 @@ Already done
 ## Lab 3: ✓
 
 With elevenlabs api calls
+Implementation: Uninspirebot/backend/src/memoizationFunction.ts
+Use: Uninspirebot/backend/src/routesHandlers.ts
 
 ## Lab 4:
 
@@ -60,7 +64,9 @@ With elevenlabs api calls
 
 ## Lab 7: ✓
 
-- Make event base particles and backgroung soundeffects in lock in mode
+Make event base particles and backgroung soundeffects in lock in mode
+Implementation: Uninspirebot/frontend/src/services/eventEmitter.ts
+Use: Uninspirebot/frontend/src/elements/lockInScreen.tsx
 
 ## Lab 8: ✓
 
