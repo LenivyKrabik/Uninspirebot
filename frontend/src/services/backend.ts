@@ -4,6 +4,14 @@ type Alignment = {
   character_end_times_seconds: Array<number>;
 };
 
+type timedAudioResponse =
+  | {
+      audio: string;
+      alignment: Alignment;
+      text: string;
+    }
+  | undefined;
+
 const backendURL = "http://localhost:3000/";
 
 async function getTestTextWisdom() {
@@ -40,14 +48,7 @@ async function getTextWisdom() {
   }
 }
 
-async function getTextTimedAudioWisdom(retries: number = 2): Promise<
-  | {
-      audio: string;
-      alignment: Alignment;
-      text: string;
-    }
-  | undefined
-> {
+async function getTextTimedAudioWisdom(retries: number = 2): Promise<timedAudioResponse> {
   try {
     const answer = await fetch(backendURL + "textTimedAudio");
     if (answer.ok) return await answer.json();
@@ -103,3 +104,5 @@ export default {
   getTextTimedAudioWisdom: getTextTimedAudioWisdom,
   getSoundEffect: getSoundEffect,
 };
+
+export type { timedAudioResponse };
