@@ -53,6 +53,7 @@ function LockInScreen() {
         }, charStartTime * 1000);
       }
 
+      //Audio effects at the end of wisdom
       const audioFinishTime = wisdom.alignment.character_end_times_seconds[textLength - 1];
       setTimeout(
         () => {
@@ -64,7 +65,7 @@ function LockInScreen() {
       );
     }
   };
-
+  //Play sound effect
   const soundEffect = async () => {
     const audio = await backend.getSoundEffect(getRandomInt(0, 2));
     if (audio === undefined) return console.warn("Can't get soundeffect");
@@ -72,17 +73,17 @@ function LockInScreen() {
     changeEffectAudio(audioSettings + audio);
     toggleEffectAudio();
   };
-
-  const visualEffect = () => {};
+  /*ToDo
+  const visualEffect = () => {};*/
 
   //On mount and on unmount
   useEffect(() => {
     eventManager.current.on("wisdomEnd", () => {
       soundEffect();
     });
-    eventManager.current.on("wisdomEnd", () => {
+    /*eventManager.current.on("wisdomEnd", () => {
       visualEffect();
-    });
+    });*/
   }, []);
 
   useEffect(() => {
