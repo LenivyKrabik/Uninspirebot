@@ -7,6 +7,9 @@ class queue<T> {
   dequeue() {
     return this.mainStorage.shift();
   }
+  peek() {
+    return this.mainStorage[0];
+  }
 }
 
 export default queue;
