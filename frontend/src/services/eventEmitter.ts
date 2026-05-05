@@ -8,18 +8,18 @@ function* idGen(): Generator<EventId, void, unknown> {
 }
 
 class EventEmitter {
-  events: { [key: string]: { id: EventId; callback: VoidFunction }[] } = {};
+  events: { [key: string]: { id: EventId; callback: Function }[] } = {};
   idSource = idGen();
-  on(name: string, callback: VoidFunction) {
+  on(name: string, callback: Function) {
     const event = this.events[name];
     const reciever = { id: this.idSource.next().value!, callback: callback };
     if (event) event.push(reciever);
     else this.events[name] = [reciever];
   }
 
-  emit(name: string) {
+  emit(name: string, ...args: any[]) {
     const event = this.events[name];
-    if (event) event.forEach((element) => element.callback());
+    if (event) event.forEach((element) => element.callback.apply(this, args));
   }
 
   unsubscrive(name: string, id: EventId) {
