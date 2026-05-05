@@ -19,7 +19,14 @@ class EventEmitter {
 
   emit(name: string, ...args: any[]) {
     const event = this.events[name];
-    if (event) event.forEach((element) => element.callback.apply(this, args));
+    if (event)
+      event.forEach((element) => {
+        try {
+          element.callback.apply(this, args);
+        } catch (error) {
+          this.emit("error", error);
+        }
+      });
   }
 
   unsubscrive(name: string, id: EventId) {
