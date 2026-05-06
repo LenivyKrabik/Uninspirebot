@@ -1,6 +1,8 @@
 import type { FastifyReply, FastifyRequest } from "fastify";
 import fs from "fs";
-import WiseMan from "./services/elevenlabs.ts";
+import WiseMan from "./services/wiseMan.ts";
+import ElevenlabsAuthProxy from "./services/elevenlabsAuthProxy.ts";
+import httpRequestWraper from "./services/httpRequestWrapper.ts";
 
 const TotalyDBPath = "/home/lenivy_krabik/KPI/Uninspirebot/AbsolutleyTotalyADB/";
 const SoundEffectFolder = "/home/lenivy_krabik/KPI/Uninspirebot/SoundEffects/";
@@ -8,7 +10,11 @@ const SoundEffectFolder = "/home/lenivy_krabik/KPI/Uninspirebot/SoundEffects/";
 const voiceId = "iiidtqDt9FBdT1vfBluA";
 const audioOutputFormat = "mp3_22050_128";
 
-const wisdomSource = new WiseMan(undefined, { voiceId: voiceId, audioOutputFormat: audioOutputFormat, totalyDBPath: TotalyDBPath });
+const wisdomSource = new WiseMan(new ElevenlabsAuthProxy(new httpRequestWraper()), {
+  voiceId: voiceId,
+  audioOutputFormat: audioOutputFormat,
+  totalyDBPath: TotalyDBPath,
+});
 
 const getTestTextWisdom = (req: FastifyRequest, reply: FastifyReply) => {
   reply.status(200).send("This is test wisdom, you allowed to not follow it");
