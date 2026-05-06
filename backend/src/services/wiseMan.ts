@@ -51,7 +51,7 @@ class WiseMan {
     }
 
     //Process reply
-    const replyObject = reply.json();
+    const replyObject = await reply.json();
     const timedAudio = {
       audio: replyObject.audio_base64,
       alignment: replyObject.alignment,

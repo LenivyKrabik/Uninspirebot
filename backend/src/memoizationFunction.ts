@@ -108,7 +108,8 @@ const memoize = (
 
   //Main function
   return async (...args: any[]) => {
-    const key = (await args[0].json()).text; //Cutting to only get sentance from body of a request
+    const reqCopy = args[0].clone();
+    const key = (await reqCopy.json()).text; //Cutting to only get sentance from body of a request
     //const key = args.join("|");
     if (cache.includes(key)) {
       const cacheEntry = readFile(cacheStorageFolder + key + ".json");

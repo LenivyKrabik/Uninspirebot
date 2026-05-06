@@ -11,7 +11,7 @@ class ElevenlabsAuthProxy {
     }, 1000 / maxRequestPerSecond);
   }
 
-  makeRequest(req: Request) {
+  makeRequest = (req: Request) => {
     //AUTH
     if (API_KEY === undefined) throw new Error("No EL API key");
     req.headers.append("xi-api-key", API_KEY);
@@ -19,7 +19,7 @@ class ElevenlabsAuthProxy {
     if (++this.requests > maxRequestPerSecond) throw new Error("Rate limited");
     //END
     return this.httpClient.makeRequest(req);
-  }
+  };
 }
 
 export default ElevenlabsAuthProxy;
