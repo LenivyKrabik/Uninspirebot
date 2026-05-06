@@ -3,3 +3,5 @@ class httpRequestWraper {
     return await fetch(req);
   }
 }
+
+export default httpRequestWraper;
