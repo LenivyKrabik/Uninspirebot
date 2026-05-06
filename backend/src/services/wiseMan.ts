@@ -2,11 +2,16 @@ import memoize from "../memoizationFunction.ts";
 import WisdomBuilder from "../wisdomBuilder.ts";
 import wisdomComponentsStorage from "../wisdomComponentsStorage.json" with { type: "json" };
 
+const parseResponse = async (rep: Response) => {
+  return await rep.json();
+};
+
 class WiseMan {
   proxy: any;
   voiceId: string;
   audioOutputFormat: string;
   makeRequest: Function;
+  parseResponse: Function;
 
   wisdomGenerator = new WisdomBuilder(wisdomComponentsStorage);
 
@@ -15,7 +20,8 @@ class WiseMan {
     this.voiceId = settings.voiceId;
     this.audioOutputFormat = settings.audioOutputFormat;
 
-    this.makeRequest = memoize(this.proxy.makeRequest, settings.totalyDBPath, "unlimited", "LFU");
+    this.makeRequest = this.proxy.makeRequest;
+    this.parseResponse = memoize(parseResponse, settings.totalyDBPath, "unlimited", "LFU");
   }
 
   Text = () => {
@@ -46,12 +52,12 @@ class WiseMan {
       }),
     );
 
-    if (!("audio_base64" in reply)) {
+    const replyObject = await this.parseResponse(reply);
+    if (replyObject.audio_base64 === undefined) {
       throw new Error("No audio property in reply");
     }
 
     //Process reply
-    const replyObject = await reply.json();
     const timedAudio = {
       audio: replyObject.audio_base64,
       alignment: replyObject.alignment,
