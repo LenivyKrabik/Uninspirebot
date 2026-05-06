@@ -1,4 +1,5 @@
 import fs from "fs";
+import Stream from "stream";
 
 //# How to improve:
 //- If cache overflow much remove all of the overflow
@@ -107,7 +108,7 @@ const memoize = (
 
   //Main function
   return async (...args: any[]) => {
-    const key = args[1].body.slice(9, -34); //Cutting to only get sentance from body of a request
+    const key = (await args[0].json()).text; //Cutting to only get sentance from body of a request
     //const key = args.join("|");
     if (cache.includes(key)) {
       const cacheEntry = readFile(cacheStorageFolder + key + ".json");

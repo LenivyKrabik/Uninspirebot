@@ -35,14 +35,16 @@ class WiseMan {
     const headers = new Headers();
     headers.append("Content-Type", "application/json");
 
-    const reply = await this.makeRequest(`https://api.elevenlabs.io/v1/text-to-speech/${this.voiceId}/with-timestamps`, {
-      method: "POST",
-      body: JSON.stringify({
-        text: text,
-        output_format: this.audioOutputFormat,
+    const reply = await this.makeRequest(
+      new Request(`https://api.elevenlabs.io/v1/text-to-speech/${this.voiceId}/with-timestamps`, {
+        method: "POST",
+        body: JSON.stringify({
+          text: text,
+          output_format: this.audioOutputFormat,
+        }),
+        headers: headers,
       }),
-      headers: headers,
-    });
+    );
 
     if (!("audio_base64" in reply)) {
       throw new Error("No audio property in reply");
