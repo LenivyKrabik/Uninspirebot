@@ -25,7 +25,7 @@ const getTextWisdom = (req: FastifyRequest, reply: FastifyReply) => {
 };
 const getTextTimedAudioWisdom = async (req: FastifyRequest, reply: FastifyReply) => {
   try {
-    const timedAudio = wisdomSource.TimedAudio();
+    const timedAudio = await wisdomSource.TimedAudio();
     reply.status(200).header("content-type", "application/json").send(timedAudio);
   } catch (err: any) {
     switch (err.message) {
