@@ -2,8 +2,6 @@ import memoize from "../memoizationFunction.ts";
 import WisdomBuilder from "../wisdomBuilder.ts";
 import wisdomComponentsStorage from "../wisdomComponentsStorage.json" with { type: "json" };
 
-const API_KEY = process.env.ELEVENLABS_UNINSPIREBOT_API_KEY;
-
 class WiseMan {
   proxy: any;
   voiceId: string;
