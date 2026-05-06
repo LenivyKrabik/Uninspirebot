@@ -16,7 +16,7 @@ const delay = (ms: number) => {
 };
 
 function LockInScreen() {
-  const wisdomsQueueSize = 5;
+  const wisdomsQueueSize = 3;
 
   const [lockedIn, setLockedIn] = useState(false);
   const [buttonClass, setButtonClass] = useState("enterLockInButton");
