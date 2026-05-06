@@ -1,67 +1,64 @@
-///
-///    THIS FILE IS A MESS ON PURPOSE
-///
-//Implementation 0
-/*import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
-
-const API_KEY = process.env.$ELEVENLABS_UNINSPIREBOT_API_KEY;
-const voiceModelID = "iiidtqDt9FBdT1vfBluA";
-
-const client = new ElevenLabsClient();
-
-if (API_KEY === undefined) {
-  throw new Error("Couldn't get API key for elevenlabs");
-}
-
-const ttsWithTimedAudio = async (text: string) => {
-  const answer = await client.textToSpeech.convertWithTimestamps(API_KEY, {
-    text: text,
-    modelId: voiceModelID,
-  });
-  return answer;
-};
-
-export default ttsWithTimedAudio;*/
-
-//Doing all of this while imagining that elevenlabs npm package does not exist
-//Also if not labs witohut package it still would be more practical to use builder
+import memoize from "../memoizationFunction.ts";
+import WisdomBuilder from "../wisdomBuilder.ts";
+import wisdomComponentsStorage from "../wisdomComponentsStorage.json" with { type: "json" };
 
 const API_KEY = process.env.ELEVENLABS_UNINSPIREBOT_API_KEY;
 
-//Implementation 1 (with function)
-/*
-const AuthProxy = (url: string, options: RequestInit) => {
-  return new Proxy(new Request(url, options), {
-    apply(target, thisArg, argumentsList) {
-      if (API_KEY === undefined) throw new Error("Can't get API key");
-      target.headers.append("xi-api-key", API_KEY);
-      return fetch(target);
-    },
-  });
-};
-*/
+class WiseMan {
+  proxy: any;
+  voiceId: string;
+  audioOutputFormat: string;
+  makeRequest: Function;
 
-//Implementation 2
-type AuthMethod = "OAuth" | "API Key" | "JWT";
+  wisdomGenerator = new WisdomBuilder(wisdomComponentsStorage);
 
-class AuthProxyElevenlabs {
-  private authMethod: AuthMethod;
-  constructor(method: AuthMethod = "API Key") {
-    this.authMethod = method;
+  constructor(proxy: any, settings: { voiceId: string; audioOutputFormat: string; totalyDBPath: string }) {
+    this.proxy = proxy;
+    this.voiceId = settings.voiceId;
+    this.audioOutputFormat = settings.audioOutputFormat;
+
+    this.makeRequest = memoize(this.proxy.makeRequest, settings.totalyDBPath, "unlimited", "LFU");
   }
-  async makeRequest(url: string, options: RequestInit = {}) {
-    const request = new Request(url, options);
-    let response;
-    if (this.authMethod === "API Key") {
-      if (API_KEY === undefined) throw new Error("Can't get API key");
-      request.headers.append("xi-api-key", API_KEY);
-      response = await fetch(request);
-      return await response.json();
+
+  Text = () => {
+    const wisdom = this.wisdomGenerator.createWisdom();
+    let wisdomText = wisdom.showText();
+
+    wisdomText = wisdomText.charAt(0).toUpperCase() + wisdomText.slice(1);
+    if (wisdomText.charAt(wisdomText.length - 1) !== ".") wisdomText += ".";
+    return wisdomText;
+  };
+
+  TimedAudio = async () => {
+    const text = this.Text();
+    if (text.length >= 300) throw new Error("Wisdom too long");
+
+    //Making request to elevenlabs
+    const headers = new Headers();
+    headers.append("Content-Type", "application/json");
+
+    const reply = await this.makeRequest(`https://api.elevenlabs.io/v1/text-to-speech/${this.voiceId}/with-timestamps`, {
+      method: "POST",
+      body: JSON.stringify({
+        text: text,
+        output_format: this.audioOutputFormat,
+      }),
+      headers: headers,
+    });
+
+    if (!("audio_base64" in reply)) {
+      throw new Error("No audio property in reply");
     }
-  }
-  swapAuthMethod(method: AuthMethod) {
-    this.authMethod = method;
-  }
+
+    //Process reply
+    const replyObject = reply.json();
+    const timedAudio = {
+      audio: replyObject.audio_base64,
+      alignment: replyObject.alignment,
+      text: text,
+    };
+    return timedAudio;
+  };
 }
 
-export default AuthProxyElevenlabs;
+export default WiseMan;
