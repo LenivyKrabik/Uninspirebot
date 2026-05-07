@@ -32,12 +32,12 @@ const getTextTimedAudioWisdom = async (req: FastifyRequest, reply: FastifyReply)
     switch (err.message) {
       case "Wisdom too long":
         reply.status(500).send({ error: "Wisdom text is suspicously long, extra precautions activated" });
-        throw new Error("Wisdom text is suspicously long, extra precautions activated");
+        console.error("Wisdom text is suspicously long, extra precautions activated");
       case "No audio property in reply":
         reply.status(502).send({ error: "Reply from Elevenlabs was not what we expected, couldn't make you request" });
-        throw new Error("Reply from Elevenlabs didn't have audio property");
+        console.error("Reply from Elevenlabs didn't have audio property");
       default:
-        console.log("Failed to get textTimedAudio with memoization");
+        console.error("Failed to get textTimedAudio with memoization");
         reply.status(500).send({ error: "Internal error" });
         throw err;
     }
@@ -54,9 +54,9 @@ const getSoundEffect = (req: FastifyRequest<{ Body: { id: number } }>, reply: Fa
     const audio = fs.readFileSync(SoundEffectFolder + allSoundEffects[req.body.id]).toString("base64");
     reply.status(200).send({ audio });
   } catch (err) {
-    console.log("Failed to get sound effect");
+    console.error("Failed to get sound effect");
     reply.status(500).send({ error: "Internal error" });
-    throw err;
+    console.error(err);
   }
 };
 
@@ -81,12 +81,12 @@ const getTextTimedAudioBatch = (req: FastifyRequest<{ Body: { amount: number } }
         errorCount++;
         switch (err.message) {
           case "Wisdom too long":
-            throw new Error("Wisdom text is suspicously long, extra precautions activated");
+            console.error("Wisdom text is suspicously long, extra precautions activated");
           case "No audio property in reply":
-            throw new Error("Reply from Elevenlabs didn't have audio property");
+            console.error("Reply from Elevenlabs didn't have audio property");
           default:
-            console.log("Failed to get textTimedAudio with memoization");
-            throw err;
+            console.error("Failed to get textTimedAudio with memoization");
+            console.error(err);
         }
       }
     }
