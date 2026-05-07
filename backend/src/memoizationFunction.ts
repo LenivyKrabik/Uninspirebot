@@ -108,8 +108,12 @@ const memoize = (
 
   //Main function
   return async (...args: any[]) => {
-    const reqCopy = args[0].clone();
-    const key = (await reqCopy.json()).alignment.characters.join(""); //Cutting to only get sentance from body of a request
+    const rep = await args[0].clone().json();
+    if (Object.hasOwn(rep, "detail")) {
+      const message = await rep.detail.stringify();
+      throw new Error(`Elevenlabs bad massage: ${message}`);
+    }
+    const key = rep.alignment.characters.join(""); //Cutting to only get sentance from body of a request
     //const key = args.join("|");
     if (cache.includes(key)) {
       const cacheEntry = readFile(cacheStorageFolder + key + ".json");
