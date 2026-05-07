@@ -10,6 +10,7 @@ const useAudio: (url: string) => [boolean, () => void, (url: string) => void] = 
     audio.current.removeEventListener("ended", () => {
       setPlayingAudio(false);
     });
+    setPlayingAudio(false);
     audio.current = new Audio(url);
     audio.current.addEventListener("ended", () => setPlayingAudio(false));
   };
