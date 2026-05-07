@@ -3,6 +3,7 @@ import fs from "fs";
 import WiseMan from "./services/wiseMan.ts";
 import ElevenlabsAuthProxy from "./services/elevenlabsAuthProxy.ts";
 import httpRequestWraper from "./services/httpRequestWrapper.ts";
+import { Readable } from "stream";
 
 const TotalyDBPath = "/home/lenivy_krabik/KPI/Uninspirebot/AbsolutleyTotalyADB/";
 const SoundEffectFolder = "/home/lenivy_krabik/KPI/Uninspirebot/SoundEffects/";
@@ -59,4 +60,40 @@ const getSoundEffect = (req: FastifyRequest<{ Body: { id: number } }>, reply: Fa
   }
 };
 
-export { getTestTextWisdom, getTextWisdom, getTextTimedAudioWisdom, getSoundEffect };
+const getTextTimedAudioBatch = (req: FastifyRequest<{ Body: { amount: number } }>, reply: FastifyReply) => {
+  if ("id" in req.body && typeof req.body.amount !== "number") {
+    reply.status(400).send({ error: "Data sent had wrong type" });
+    return;
+  }
+
+  async function* dataSource() {
+    let errorCount = 0;
+    for (let i = 0; i < req.body.amount; i++) {
+      if (errorCount >= 3) {
+        console.error("Too much errors while trying to get textTimedAudio in batches, stopping trying");
+        return;
+      }
+      try {
+        const timedAudio = await wisdomSource.TimedAudio();
+        yield JSON.stringify(timedAudio) + "\n";
+      } catch (err: any) {
+        i--;
+        errorCount++;
+        switch (err.message) {
+          case "Wisdom too long":
+            throw new Error("Wisdom text is suspicously long, extra precautions activated");
+          case "No audio property in reply":
+            throw new Error("Reply from Elevenlabs didn't have audio property");
+          default:
+            console.log("Failed to get textTimedAudio with memoization");
+            throw err;
+        }
+      }
+    }
+  }
+  const dataStream = Readable.from(dataSource());
+
+  reply.status(200).type("application/x-ndjson").send(dataStream);
+};
+
+export { getTestTextWisdom, getTextWisdom, getTextTimedAudioWisdom, getSoundEffect, getTextTimedAudioBatch };
