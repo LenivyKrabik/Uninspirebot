@@ -1,35 +1,17 @@
 /*
-Requirements:
-1.	Logging Decorator Implementation
-	✓	Accept a log level (INFO, DEBUG, ERROR).
-	✓	Log function arguments and return values.
-	✓	Support both sync and async functions.
-2.	Features:
-	✓	Allow logging to console, file, or external services.
-	✓	Provide a timestamp for each log entry.
-	✓	Support conditional logging (e.g., only log errors).
-	✓	Include execution time profiling (optional).
-3.	Operations:
-	✓	@log(level="INFO") → Logs function input/output at the INFO level.
-	✓	@log(level="ERROR") → Logs only when an exception occurs.
-4.	Extensibility:
-	✓	Allow custom log formatters.
-	•	Support structured logging (e.g., JSON output).
-*/
-/*
 My notes:
 - Fix situation when file to write to doesn't exist
 - Technically there is an edge case, for factories or builders that return Promises as final product
+- Need to test
 */
-import { error } from "console";
 import fs from "fs";
 
 type FunctionUseReport = {
   name: string;
   agrs?: any[];
   result?: any;
-  callTime?: Date;
-  doneTime?: Date;
+  callTime?: string;
+  doneTime?: string;
 };
 
 type LogLevel = "INFO" | "ERROR";
@@ -76,11 +58,11 @@ const logger = (
     return (...args: any[]) => {
       const functionUseReport = structuredClone(functionUseReportBase);
       functionUseReport.agrs = args;
-      functionUseReport.callTime = new Date();
+      functionUseReport.callTime = new Date().toISOString();
       let result;
       const settleAnswer = (answer: any) => {
         functionUseReport.result = answer;
-        functionUseReport.doneTime = new Date();
+        functionUseReport.doneTime = new Date().toISOString();
         log(functionUseReport, logLevel, logFormater, logVariant, logDestination);
       };
       try {
