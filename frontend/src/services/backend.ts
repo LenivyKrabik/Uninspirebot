@@ -67,9 +67,46 @@ async function getTextTimedAudioWisdom(retries: number = 2): Promise<timedAudioR
   }
 }
 
+async function* getTextTimedAudioWisdomBatch(amount: number) {
+  try {
+    const header = new Headers({ "Content-Type": "application/json" });
+    const req = new Request(backendURL + "textTimedAudioBatch", {
+      method: "POST",
+      body: JSON.stringify({
+        amount: amount,
+      }),
+      headers: header,
+    });
+    const answer = await fetch(req);
+    if (!answer.ok) return console.warn("Got error from server");
+    if (answer.body) {
+      //Decode NDJSON
+      let buffer = "";
+      const decoder = new TextDecoder();
+      for await (const chunk of answer.body) {
+        buffer += decoder.decode(chunk);
+        const blocks = buffer.split("\n");
+        buffer = blocks.pop()!;
+        for (const fullJSON of blocks) {
+          try {
+            yield JSON.parse(fullJSON);
+          } catch (err) {
+            console.error("Coudn't parse response from backend from audio batch");
+            console.error(err);
+          }
+        }
+      }
+      return;
+    }
+  } catch (err) {
+    if (err instanceof TypeError) console.warn("Can't reach server");
+    console.warn(err);
+    return undefined;
+  }
+}
+
 async function getSoundEffect(id: number) {
-  const headers = new Headers();
-  headers.append("Content-Type", "application/json");
+  const headers = new Headers({ "Content-Type": "application/json" });
   const req = new Request(backendURL + "soundEffect", {
     method: "POST",
     body: JSON.stringify({
@@ -103,6 +140,7 @@ export default {
   getTextWisdom: getTextWisdom,
   getTextTimedAudioWisdom: getTextTimedAudioWisdom,
   getSoundEffect: getSoundEffect,
+  getTextTimedAudioWisdomBatch: getTextTimedAudioWisdomBatch,
 };
 
 export type { timedAudioResponse };

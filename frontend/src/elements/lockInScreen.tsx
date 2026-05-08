@@ -33,24 +33,15 @@ function LockInScreen() {
 
   const audioSettings = "data:audio/mpeg;base64,";
 
-  const fillWisdomsQueue = () => {
+  const fillWisdomsQueue = async () => {
     console.log("Filling up wisdoms queue");
     fillingUpQueue.current = true;
     const amountToFill = wisdomsQueueSize - wisdomsQueue.current.size();
-    let doneWith = 0;
-    for (let i = 0; i < amountToFill; i++) {
-      backend
-        .getTextTimedAudioWisdom()
-        .then((value) => {
-          wisdomsQueue.current.enqueue(value);
-        })
-        .catch((error) => {
-          console.warn(`Couldn't get wisdom: ${error}`);
-        })
-        .finally(() => {
-          if (++doneWith == amountToFill) fillingUpQueue.current = false;
-        });
+    const answers = backend.getTextTimedAudioWisdomBatch(amountToFill);
+    for await (const audioWisdom of answers) {
+      wisdomsQueue.current.enqueue(audioWisdom);
     }
+    fillingUpQueue.current = false;
   };
 
   //Starting LockIn sesion
