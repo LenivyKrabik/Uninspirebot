@@ -99,7 +99,7 @@ class SQLiteDB {
     });
   };
 
-  insert = (table: string, args: any[]) => {
+  insert = (table: string, args: any[] = []) => {
     const params = this.tableColumns.get(table);
     if (params === undefined) {
       this.handler(new Error(`Table ${table} doesn't exist`));
@@ -118,7 +118,7 @@ class SQLiteDB {
     });
   };
 
-  custom = (querry: string, values: any[]) => {
+  custom = (querry: string, values: any[] = []) => {
     return new Promise((resolve, reject) => {
       this.#db.all(
         querry,
