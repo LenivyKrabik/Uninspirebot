@@ -18,9 +18,9 @@ const memoize = (
   };
   cacheInit();
 
-  const writeFile = (path: string, objToWrite: any) => {
+  const writeFile = (key: string, objToWrite: any) => {
     const objToWriteStringified = JSON.stringify(objToWrite);
-    fs.writeFileSync(path, objToWriteStringified);
+    fs.writeFileSync(cacheStorageFolder + key + ".json", objToWriteStringified);
   };
 
   const removeFromCache = (key: string) => {
@@ -32,8 +32,9 @@ const memoize = (
     }
   };
 
-  const readFile = (path: string) => {
-    const cacheEntryStringified = fs.readFileSync(path, {
+  const readFile = (key: string | undefined) => {
+    if (key === undefined) return undefined;
+    const cacheEntryStringified = fs.readFileSync(cacheStorageFolder + key + ".json", {
       encoding: "utf8",
     });
     return JSON.parse(cacheEntryStringified);
@@ -42,7 +43,7 @@ const memoize = (
   const updateCache = (key: string, cacheEntry: any) => {
     cacheEntry.lastAccessed = new Date().getTime();
     cacheEntry.timesUsed++;
-    writeFile(cacheStorageFolder + key + ".json", cacheEntry);
+    writeFile(key, cacheEntry);
   };
 
   let cleanerInterval: NodeJS.Timeout;
@@ -55,7 +56,7 @@ const memoize = (
           let minTime = new Date().getTime();
           let searchedKey = "";
           for (let id = 0; id <= cache.length - 1; id++) {
-            const cacheEntry = readFile(cacheStorageFolder + cache[id] + ".json");
+            const cacheEntry = readFile(cache[id]);
             if (cacheEntry.lastAccessed <= minTime) {
               minTime = cacheEntry.lastAccessed;
               searchedKey = cache[id]!;
@@ -67,10 +68,10 @@ const memoize = (
       case "LFU":
         if (needToClean) {
           console.log("LFU");
-          let minUses = readFile(cacheStorageFolder + cache[0] + ".json").timesUsed;
+          let minUses = readFile(cache[0]).timesUsed;
           let searchedKey = "";
           for (let id = 0; id <= cache.length - 1; id++) {
-            const cacheEntry = readFile(cacheStorageFolder + cache[id] + ".json");
+            const cacheEntry = readFile(cache[id]);
             if (cacheEntry.timesUsed <= minUses) {
               minUses = cacheEntry.timesUsed;
               searchedKey = cache[id]!;
@@ -88,7 +89,7 @@ const memoize = (
               const timeNow = new Date().getTime();
               const keysToRemove = [];
               for (let id = 0; id <= cache.length - 1; id++) {
-                const cacheEntry = readFile(cacheStorageFolder + cache[id] + ".json");
+                const cacheEntry = readFile(cache[id]);
                 if (timeNow - cacheEntry.creationTime < cacheLimit) continue;
                 keysToRemove.unshift(cache[id]!);
               }
@@ -120,7 +121,7 @@ const memoize = (
     const key = rep.alignment.characters.join(""); //Cutting to only get sentance from body of a request
     //const key = args.join("|");
     if (cache.includes(key)) {
-      const cacheEntry = readFile(cacheStorageFolder + key + ".json");
+      const cacheEntry = readFile(key);
       updateCache(key, cacheEntry);
       console.log("Used cache");
       return cacheEntry.obj;
@@ -132,7 +133,7 @@ const memoize = (
         timesUsed: 1,
         creationTime: new Date().getTime(),
       };
-      writeFile(cacheStorageFolder + key + ".json", newEntry);
+      writeFile(key, newEntry);
       cache.unshift(key);
       console.log("Made new value");
       return newEntry.obj;
