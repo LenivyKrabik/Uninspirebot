@@ -12,7 +12,11 @@ const memoize = (
   cacheLimit: number | "unlimited" = "unlimited",
   cacheEvictionPolicy: "LRU" | "LFU" | "TimeBased" | ((cache: string[]) => string) = "LRU",
 ) => {
-  const cache = fs.readdirSync(cacheStorageFolder).map((file) => file.slice(0, -5));
+  let cache: string[];
+  const cacheInit = () => {
+    cache = fs.readdirSync(cacheStorageFolder).map((file) => file.slice(0, -5));
+  };
+  cacheInit();
 
   const writeFile = (path: string, objToWrite: any) => {
     const objToWriteStringified = JSON.stringify(objToWrite);
