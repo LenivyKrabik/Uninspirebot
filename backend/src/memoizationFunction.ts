@@ -1,4 +1,5 @@
 // import fs from "fs";
+import logger from "./services/logger.ts";
 import SQLiteDB from "./services/SQLiteDBManager.ts";
 
 //# How to improve:
@@ -14,6 +15,9 @@ const memoize = async (
 ) => {
   let cache: string[] = [];
   const db = new SQLiteDB();
+  const log = logger("INFO", "CONSOLE");
+  db.custom = log(db.custom);
+
   const cacheInit = async () => {
     await db.connect(cacheStorageFile);
     if (!db.tableColumns.has("audioWisdoms")) await db.createTable("audioWisdoms", "text STRING PRIMARY KEY, entry STRING");
