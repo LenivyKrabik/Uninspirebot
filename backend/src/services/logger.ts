@@ -8,7 +8,7 @@ import fs from "fs";
 
 type FunctionUseReport = {
   name: string;
-  agrs?: any[];
+  args?: any[];
   result?: any;
   callTime?: string;
   doneTime?: string;
@@ -18,7 +18,18 @@ type LogLevel = "INFO" | "ERROR";
 type LogVaraint = "CONSOLE" | "FILE" | "CUSTOM";
 type LogDestination = string | ((text: string) => void) | undefined; //Add custom path
 
+const shrinkStrings: (value: any[]) => any = (value: any[]) => {
+  return value.map((item) => {
+    if (Array.isArray(item)) return shrinkStrings(item);
+    else if (typeof item === "string" && item.length >= 500) return item.slice(0, 500) + ` and ${item.length - 500} more...`;
+    else return item;
+  });
+};
+
 const standartLogFormater = (report: FunctionUseReport) => {
+  if (report.args) {
+    report.args = shrinkStrings(report.args);
+  }
   return JSON.stringify(report);
 };
 
@@ -57,7 +68,7 @@ const logger = (
     const functionUseReportBase: FunctionUseReport = { name: fn.name };
     return (...args: any[]) => {
       const functionUseReport = structuredClone(functionUseReportBase);
-      functionUseReport.agrs = args;
+      functionUseReport.args = args;
       functionUseReport.callTime = new Date().toISOString();
       let result;
       const settleAnswer = (answer: any) => {
