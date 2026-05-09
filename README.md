@@ -10,7 +10,7 @@ Clone of inspirobot.me but worse
 - Make more phrases
 - Review wisdomBuilder.ts
 - Add cors for right addresses access to backend only
-- Add test
+- Add tests
 - Make it look pretier💅
 - NotFound page
 - Make proper error handing on frontend comunication with backend
@@ -22,23 +22,34 @@ Clone of inspirobot.me but worse
 - Make event emmiter in front id not just a number
 - Cache sound effects on client side
 - Instead of hardcoding sound efects amount get it from backend
-- Time between wisdoms
 - Finish visual effects
 - Make so not getting wisdom in lockInCycle woudn't stop it entirely
 - Signal that can't get to backend in homePage and lockInScreen
 - Make all of the events go through one event emiter instance using services
 - Add check weathere there are any items in queue
-- Rework api proxy
 - VOLUMEEE CONTROLL
 - Unsubscribe sound and visual effects on unmount
 - Make lockInWisdomCycle not work just on useEffect but on events instead
-- Signal that wisdom is undefined and move on and not just stop in lockInCucle page
+- Signal that wisdom is undefined and move on and not just stop in lockInCycle page
+- With proper lab 8 architecture also limit amount of requests depending on amount of them and tokens left in elevenlabs
+- Change getTestTextWisdom to getTestWisdom
+- Make memoization take function to make keys as argument
+- ACTUALLY removeEventListener on useAudio
+- Maybe send as last object at the end of audio batch stream an error
+- Change warns to errors in backend.ts
+- Fix pathes to be local and not on my pc
+- Fix SQLinjections risk
+- Make timebased delete in memoization base on db functionality
+- Error handling on memoization's db calls
+- Rename in memoization storage filto to storage path
+- Refactor stats of cache from files way to db way
 
 # Ideas to implement labs:
 
 ## Lab 1: ✓
 
-Generator: Uninspirebot/frontend/src/services/eventEmitter.ts
+Generator: Uninspirebot/frontend/src/services/backend.ts
+Iterator over generator: Uninspirebot/frontend/src/elements/lockInScreen.tsx (fillWisdomsQueue)
 
 ## Lab 2: ✓
 
@@ -50,12 +61,9 @@ Already done
 
 Implementation: Uninspirebot/backend/src/memoizationFunction.ts
 
-Use: Uninspirebot/backend/src/routesHandlers.ts
+Use: Uninspirebot/backend/src/services/wiseMan.ts
 
 ## Lab 4: ✓
-
-- Base particles and soundefects choose on bi-directional priority queue
-- Make list of all phrases that can be rated and sorted by time and rating
 
 # Wisdoms queue
 
@@ -66,12 +74,20 @@ Use: Uninspirebot/frontend/src/elements/lockInScreen.tsx
 
 ## Lab 5: ✓
 
-Async usage: Uninspirebot/frontend/src/elements/lockInScreen.tsx (fillWisdomsQueue function)
+Async usage examples:
+Uninspirebot/backend/src/services/SQLiteDBManager.ts
+Uninspirebot/backend/src/memoizationFunction.ts
+Uninspirebot/backend/src/services/logger.ts
 
-## Lab 6:
+Full lab implementation (just in case): Uninspirebot/frontend/src/services/asyncMap.ts
 
-- Use for claude integration for LLM integreation to make new personolized words
-- Use for initializing cache for memoization of elevenlabs calls
+## Lab 6: ✓
+
+# Audio with timed text in batches
+
+Usages:
+Make stream: Uninspirebot/backend/src/routesHandlers.ts (getTextTimedAudioBatch)
+Parse stream: Uninspirebot/frontend/src/services/backend.ts (getTextTimedAudioWisdomBatch)
 
 ## Lab 7: ✓
 
@@ -83,7 +99,12 @@ Use: Uninspirebot/frontend/src/elements/lockInScreen.tsx
 
 ## Lab 8: ✓
 
-- Make ElevenLabs voices
+# Make ElevenLabs voices
+
+Implementations:
+HTTPClient: Uninspirebot/backend/src/services/httpRequestWrapper.ts
+Proxy: Uninspirebot/backend/src/services/elevenlabsAuthProxy.ts
+Service: Uninspirebot/backend/src/services/wiseMan.ts
 
 ## Lab 9:
 
