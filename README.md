@@ -106,9 +106,13 @@ HTTPClient: Uninspirebot/backend/src/services/httpRequestWrapper.ts
 Proxy: Uninspirebot/backend/src/services/elevenlabsAuthProxy.ts
 Service: Uninspirebot/backend/src/services/wiseMan.ts
 
-## Lab 9:
+## Lab 9: ✓
 
-- Use on route handlers
+# Log of all with possible errors on db
+
+Implementation: Uninspirebot/backend/src/services/logger.ts
+
+Use: Uninspirebot/backend/src/memoizationFunction.ts (on db.custom)
 
 # General ideas:
 
