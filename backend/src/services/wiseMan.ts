@@ -15,14 +15,18 @@ class WiseMan {
 
   wisdomGenerator = new WisdomBuilder(wisdomComponentsStorage);
 
-  constructor(proxy: any, settings: { voiceId: string; audioOutputFormat: string; totalyDBPath: string }) {
+  constructor(proxy: any, settings: { voiceId: string; audioOutputFormat: string }) {
     this.proxy = proxy;
     this.voiceId = settings.voiceId;
     this.audioOutputFormat = settings.audioOutputFormat;
 
     this.makeRequest = this.proxy.makeRequest;
-    this.parseResponse = memoize(parseResponse, settings.totalyDBPath, "unlimited", "LFU");
+    this.parseResponse = parseResponse;
   }
+
+  Cache = async (DBPath: string) => {
+    this.parseResponse = await memoize(parseResponse, DBPath, "unlimited", "LFU");
+  };
 
   Text = () => {
     const wisdom = this.wisdomGenerator.createWisdom();

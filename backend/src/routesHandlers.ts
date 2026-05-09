@@ -5,7 +5,7 @@ import ElevenlabsAuthProxy from "./services/elevenlabsAuthProxy.ts";
 import httpRequestWraper from "./services/httpRequestWrapper.ts";
 import { Readable } from "stream";
 
-const TotalyDBPath = "/home/lenivy_krabik/KPI/Uninspirebot/AbsolutleyTotalyADB/";
+const DBPath = "/home/lenivy_krabik/KPI/Uninspirebot/backend/src/existingAudios.db";
 const SoundEffectFolder = "/home/lenivy_krabik/KPI/Uninspirebot/SoundEffects/";
 
 const voiceId = "iiidtqDt9FBdT1vfBluA";
@@ -14,8 +14,8 @@ const audioOutputFormat = "mp3_22050_128";
 const wisdomSource = new WiseMan(new ElevenlabsAuthProxy(new httpRequestWraper()), {
   voiceId: voiceId,
   audioOutputFormat: audioOutputFormat,
-  totalyDBPath: TotalyDBPath,
 });
+await wisdomSource.Cache(DBPath);
 
 const getTestTextWisdom = (req: FastifyRequest, reply: FastifyReply) => {
   reply.status(200).send("This is test wisdom, you allowed to not follow it");
