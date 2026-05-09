@@ -49,8 +49,8 @@ const log = (
 
 const logger = (
   logLevel: LogLevel,
-  logFormater: (report: FunctionUseReport) => string = standartLogFormater,
   logVariant: LogVaraint = "CONSOLE",
+  logFormater: (report: FunctionUseReport) => string = standartLogFormater,
   logDestination?: LogDestination,
 ) => {
   return (fn: Function) => {
@@ -72,14 +72,7 @@ const logger = (
       }
 
       if (Object.getPrototypeOf(result).constructor === Promise) {
-        result
-          .then((answer: any) => {
-            settleAnswer(answer);
-          })
-          .catch((error: Error) => {
-            settleAnswer(error);
-            throw error;
-          });
+        settleAnswer("Promise");
       } else {
         settleAnswer(result);
         if (Object.getPrototypeOf(result).constructor === Error) throw result;
