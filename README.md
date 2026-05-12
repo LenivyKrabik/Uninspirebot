@@ -40,11 +40,12 @@ Uninspirobot - is an anicent all knowing God from actez times, who know exactly 
 - Maybe send as last object at the end of audio batch stream an error
 - Change warns to errors in backend.ts
 - Fix pathes to be local and not on my pc
-- Fix SQLinjections risk
+- Fix SQL injections risk
 - Make timebased delete in memoization base on db functionality
 - Error handling on memoization's db calls
 - Rename in memoization storage filto to storage path
 - Refactor stats of cache from files way to db way
+- Make front react to ratelimit
 
 # Ideas to implement labs:
 
