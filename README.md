@@ -1,6 +1,9 @@
 # Uninspirebot
 
-Clone of inspirobot.me but worse
+Clone of inspirobot.me but worse.
+
+Have you ever felt the lack of energy and motivation? Then this site isn't for you.
+Uninspirobot - is an anicent all knowing God from actez times, who know exactly what any person needs to hear in this moment. However, It didn't have any sacrifices in a very long time and that makes It angry. So now, getting rebirthed into a living flesh (servers run on 101 potatos) It's goal is to make everyone It can get It's hands on suffer in eternal hell.
 
 ## ToDo list:
 
