@@ -67,7 +67,7 @@ function LockInScreen() {
         setWisdomCount((c) => c + 1);
       } else {
         const wisdom = wisdomsQueue.current.dequeue();
-        if (wisdom === undefined) return; //ToDo: signal that can't connect to backend
+        if (wisdom instanceof TypeError || wisdom === undefined) return; //ToDo: signal that can't connect to backend
         //await backend.getTestTextWisdom();
         setTextPosition({ top: getRandomInt(6, 60), left: getRandomInt(6, 50) });
         changeWisdomAudio(audioSettings + wisdom.audio);

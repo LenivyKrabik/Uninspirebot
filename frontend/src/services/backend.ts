@@ -99,9 +99,9 @@ async function* getTextTimedAudioWisdomBatch(amount: number) {
       return;
     }
   } catch (err) {
-    if (err instanceof TypeError) console.warn("Can't reach server");
-    console.warn(err);
-    return undefined;
+    if (err instanceof TypeError) console.error("Can't reach server");
+    yield err;
+    return;
   }
 }
 
