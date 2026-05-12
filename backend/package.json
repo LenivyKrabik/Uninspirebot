@@ -28,6 +28,7 @@
     "dev": "nodemon --exec ts-node ./src/main.ts"
   },
   "dependencies": {
+    "@fastify/cors": "^11.2.0",
     "fastify": "^5.8.2",
     "sqlite3": "^6.0.1"
   },

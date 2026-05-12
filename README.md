@@ -12,7 +12,6 @@ Uninspirobot - is an anicent all knowing God from actez times, who know exactly 
 - Afirmations and mantras
 - Make more phrases
 - Review wisdomBuilder.ts
-- Add cors for right addresses access to backend only
 - Add tests
 - Make it look pretier💅
 - NotFound page
