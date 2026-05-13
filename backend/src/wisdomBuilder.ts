@@ -1,5 +1,7 @@
 import type { WisdomComponentDesc, WisdomsComponentsStorage } from "./wisdomComponentsTypes.ts";
 
+type componentsContainer = "phrases" | "nouns" | "adjectives" | "verbs";
+
 const getRandomInt = (min: number, max: number) => {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
@@ -34,14 +36,16 @@ class WisdomComponent {
   component: WisdomComponentDesc;
   variables: Array<WisdomComponent>;
   text: string;
+  componentsContainer: componentsContainer;
 
-  constructor(wisdomsComponentsStorage: WisdomsComponentsStorage) {
+  constructor(wisdomsComponentsStorage: WisdomsComponentsStorage, componentsContainer: componentsContainer) {
     const proto = Object.getPrototypeOf(this);
     if (proto.constructor === WisdomComponent) {
       throw new Error("Abstract class should not be instanciated");
     }
     this.wisdomsComponentsStorage = wisdomsComponentsStorage;
     this.variables = new Array<WisdomComponent>();
+    this.componentsContainer = componentsContainer;
 
     this.finishCreating();
   }
@@ -53,7 +57,8 @@ class WisdomComponent {
   }
 
   assignComponent() {
-    console.log("Not implemented");
+    const count = this.wisdomsComponentsStorage[this.componentsContainer].length;
+    this.component = this.wisdomsComponentsStorage[this.componentsContainer][getRandomInt(0, count - 1)]!;
   }
 
   createVariables() {
@@ -95,7 +100,7 @@ class WisdomComponent {
 
 class PhraseObject extends WisdomComponent {
   constructor(wisdomsComponentsStorage: WisdomsComponentsStorage) {
-    super(wisdomsComponentsStorage);
+    super(wisdomsComponentsStorage, "phrases");
   }
 
   assignComponent() {
@@ -112,45 +117,25 @@ class PhraseObject extends WisdomComponent {
 
 class NounObject extends WisdomComponent {
   constructor(wisdomsComponentsStorage: WisdomsComponentsStorage) {
-    super(wisdomsComponentsStorage);
-  }
-
-  assignComponent() {
-    const count = this.wisdomsComponentsStorage.nouns.length;
-    this.component = this.wisdomsComponentsStorage.nouns[getRandomInt(0, count - 1)]!;
+    super(wisdomsComponentsStorage, "nouns");
   }
 }
 
 class AdjectiveObject extends WisdomComponent {
   constructor(wisdomsComponentsStorage: WisdomsComponentsStorage) {
-    super(wisdomsComponentsStorage);
-  }
-
-  assignComponent() {
-    const count = this.wisdomsComponentsStorage.adjectives.length;
-    this.component = this.wisdomsComponentsStorage.adjectives[getRandomInt(0, count - 1)]!;
+    super(wisdomsComponentsStorage, "adjectives");
   }
 }
 
 class VerbObject extends WisdomComponent {
   constructor(wisdomsComponentsStorage: WisdomsComponentsStorage) {
-    super(wisdomsComponentsStorage);
-  }
-
-  assignComponent() {
-    const count = this.wisdomsComponentsStorage.verbs.length;
-    this.component = this.wisdomsComponentsStorage.verbs[getRandomInt(0, count - 1)]!;
+    super(wisdomsComponentsStorage, "verbs");
   }
 }
 
 class GerundObject extends WisdomComponent {
   constructor(wisdomsComponentsStorage: WisdomsComponentsStorage) {
-    super(wisdomsComponentsStorage);
-  }
-
-  assignComponent() {
-    const count = this.wisdomsComponentsStorage.verbs.length;
-    this.component = this.wisdomsComponentsStorage.verbs[getRandomInt(0, count - 1)]!;
+    super(wisdomsComponentsStorage, "verbs");
   }
 
   finishCreating() {
