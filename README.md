@@ -7,8 +7,6 @@ Uninspirobot - is an anicent all knowing God from actez times, who know exactly 
 
 ## ToDo list:
 
-- Deal with possible not correct answer type in textTimedAudio route handler
-- In wisdomBuilder.ts make static function for assignComponent on abstract class, so i wouldn't need to copy it couple of times
 - Afirmations and mantras
 - Make more phrases
 - Review wisdomBuilder.ts
@@ -44,6 +42,7 @@ Uninspirobot - is an anicent all knowing God from actez times, who know exactly 
 - Rename in memoization storage filto to storage path
 - Refactor stats of cache from files way to db way
 - Make front react to ratelimit
+- Revisit wisdomBuilder.ts and change to less classes, because everything except prhase and verb(gerund) is the same
 
 # Ideas to implement labs:
 
