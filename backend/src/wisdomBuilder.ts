@@ -1,7 +1,4 @@
-import type {
-  WisdomComponent,
-  WisdomsComponentsStorage,
-} from "./wisdomComponentsTypes.ts";
+import type { WisdomComponentDesc, WisdomsComponentsStorage } from "./wisdomComponentsTypes.ts";
 
 const getRandomInt = (min: number, max: number) => {
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -12,10 +9,7 @@ const rollRandomChance = (percent: number) => {
   return getRandomInt(1, 100) <= percent;
 };
 
-const makeComponent = (
-  name: string,
-  wisdomsComponentsStorage: WisdomsComponentsStorage,
-) => {
+const makeComponent = (name: string, wisdomsComponentsStorage: WisdomsComponentsStorage) => {
   switch (name) {
     case "phrase":
       return new PhraseObject(wisdomsComponentsStorage);
@@ -35,19 +29,19 @@ const makeComponent = (
   }
 };
 
-class AbstractWisdomComponent {
+class WisdomComponent {
   wisdomsComponentsStorage: WisdomsComponentsStorage;
-  component: WisdomComponent;
-  variables: Array<AbstractWisdomComponent>;
+  component: WisdomComponentDesc;
+  variables: Array<WisdomComponent>;
   text: string;
 
   constructor(wisdomsComponentsStorage: WisdomsComponentsStorage) {
     const proto = Object.getPrototypeOf(this);
-    if (proto.constructor === AbstractWisdomComponent) {
+    if (proto.constructor === WisdomComponent) {
       throw new Error("Abstract class should not be instanciated");
     }
     this.wisdomsComponentsStorage = wisdomsComponentsStorage;
-    this.variables = new Array<AbstractWisdomComponent>();
+    this.variables = new Array<WisdomComponent>();
 
     this.finishCreating();
   }
@@ -69,13 +63,10 @@ class AbstractWisdomComponent {
     for (let symbol of iterator) {
       if (symbol !== "#") continue;
 
-      if (
-        "variables" in this.component &&
-        this.component.variables !== undefined
-      ) {
-        const variableDescArray = this.component.variables[variableNumber++]!;
-        const count = variableDescArray.length;
-        const variableDesc = variableDescArray[getRandomInt(0, count - 1)];
+      if ("variables" in this.component && this.component.variables !== undefined) {
+        const variablesDescArray = this.component.variables[variableNumber++]!;
+        const amount = variablesDescArray.length;
+        const variableDesc = variablesDescArray[getRandomInt(0, amount - 1)];
 
         if (variableDesc !== undefined && "type" in variableDesc) {
           const name = variableDesc.type;
@@ -102,7 +93,7 @@ class AbstractWisdomComponent {
   }
 }
 
-class PhraseObject extends AbstractWisdomComponent {
+class PhraseObject extends WisdomComponent {
   constructor(wisdomsComponentsStorage: WisdomsComponentsStorage) {
     super(wisdomsComponentsStorage);
   }
@@ -111,61 +102,55 @@ class PhraseObject extends AbstractWisdomComponent {
     //Chance for phrase wrapper
     if (rollRandomChance(90)) {
       const count = this.wisdomsComponentsStorage.phrases.length;
-      this.component =
-        this.wisdomsComponentsStorage.phrases[getRandomInt(0, count - 1)]!;
+      this.component = this.wisdomsComponentsStorage.phrases[getRandomInt(0, count - 1)]!;
     } else {
       const count = this.wisdomsComponentsStorage.wrapers.length;
-      this.component =
-        this.wisdomsComponentsStorage.wrapers[getRandomInt(0, count - 1)]!;
+      this.component = this.wisdomsComponentsStorage.wrapers[getRandomInt(0, count - 1)]!;
     }
   }
 }
 
-class NounObject extends AbstractWisdomComponent {
+class NounObject extends WisdomComponent {
   constructor(wisdomsComponentsStorage: WisdomsComponentsStorage) {
     super(wisdomsComponentsStorage);
   }
 
   assignComponent() {
     const count = this.wisdomsComponentsStorage.nouns.length;
-    this.component =
-      this.wisdomsComponentsStorage.nouns[getRandomInt(0, count - 1)]!;
+    this.component = this.wisdomsComponentsStorage.nouns[getRandomInt(0, count - 1)]!;
   }
 }
 
-class AdjectiveObject extends AbstractWisdomComponent {
+class AdjectiveObject extends WisdomComponent {
   constructor(wisdomsComponentsStorage: WisdomsComponentsStorage) {
     super(wisdomsComponentsStorage);
   }
 
   assignComponent() {
     const count = this.wisdomsComponentsStorage.adjectives.length;
-    this.component =
-      this.wisdomsComponentsStorage.adjectives[getRandomInt(0, count - 1)]!;
+    this.component = this.wisdomsComponentsStorage.adjectives[getRandomInt(0, count - 1)]!;
   }
 }
 
-class VerbObject extends AbstractWisdomComponent {
+class VerbObject extends WisdomComponent {
   constructor(wisdomsComponentsStorage: WisdomsComponentsStorage) {
     super(wisdomsComponentsStorage);
   }
 
   assignComponent() {
     const count = this.wisdomsComponentsStorage.verbs.length;
-    this.component =
-      this.wisdomsComponentsStorage.verbs[getRandomInt(0, count - 1)]!;
+    this.component = this.wisdomsComponentsStorage.verbs[getRandomInt(0, count - 1)]!;
   }
 }
 
-class GerundObject extends AbstractWisdomComponent {
+class GerundObject extends WisdomComponent {
   constructor(wisdomsComponentsStorage: WisdomsComponentsStorage) {
     super(wisdomsComponentsStorage);
   }
 
   assignComponent() {
     const count = this.wisdomsComponentsStorage.verbs.length;
-    this.component =
-      this.wisdomsComponentsStorage.verbs[getRandomInt(0, count - 1)]!;
+    this.component = this.wisdomsComponentsStorage.verbs[getRandomInt(0, count - 1)]!;
   }
 
   finishCreating() {

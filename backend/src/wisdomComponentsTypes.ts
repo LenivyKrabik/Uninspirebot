@@ -39,6 +39,6 @@ type Afirmation = {
   text: string;
 };
 
-type WisdomComponent = Phrase | Noun | Verb | Adjective | Mantra | Afirmation;
+type WisdomComponentDesc = Phrase | Noun | Verb | Adjective | Mantra | Afirmation;
 
-export type { WisdomsComponentsStorage, WisdomComponent, Phrase };
+export type { WisdomsComponentsStorage, WisdomComponentDesc, Phrase };
